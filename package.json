@@ -14,7 +14,7 @@
     "ios",
     "cpp",
     "react-native-aculab-client.podspec",
-    "!lib/typescript/example-AcuMobCom",
+    "!lib/typescript/example-AculabCall",
     "!android/build",
     "!ios/build",
     "!**/__tests__",
@@ -78,12 +78,14 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "react-native-webrtc": "^1.94.1"
+    "react-native-webrtc": "^1.94.1",
+    "react-native-callkeep": "^4.3.1",
+    "react-native-android-call-kit": "^1.0.0"
   },
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
-      "<rootDir>/example-AcuMobCom/node_modules",
+      "<rootDir>/example-AculabCall/node_modules",
       "<rootDir>/lib/"
     ]
   },

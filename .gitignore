@@ -39,6 +39,7 @@ android.iml
 # Cocoapods
 #
 example-AcuMobCom/ios/Pods
+example-AculabCall/ios/Pods
 
 # node.js
 #

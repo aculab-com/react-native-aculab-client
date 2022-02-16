@@ -1,5 +1,5 @@
 
 {
   "extends": "./tsconfig",
-  "exclude": ["example-AcuMobCom", "example"]
+  "exclude": ["example-AcuMobCom", "example-AculabCall"]
 }

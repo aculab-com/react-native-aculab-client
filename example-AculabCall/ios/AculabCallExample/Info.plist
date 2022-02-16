@@ -11,13 +11,13 @@
 		<string>Ionicons.ttf</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>App uses video chat</string>
+	<string>for video chat</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>App uses audio chat</string>
+	<string>for chat</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>RNAculabCallDemo</string>
+	<string>AculabCall Example</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

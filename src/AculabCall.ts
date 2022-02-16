@@ -1,8 +1,6 @@
 import { Platform, DeviceEventEmitter } from 'react-native';
 import AcuMobCom from './AcuMobCom';
 import { showAlert } from './helpers';
-// test with call keep being installed with the app
-// @ts-ignore
 import RNCallKeep, { CONSTANTS as CK_CONSTANTS } from 'react-native-callkeep';
 // @ts-ignore
 import IncomingCall from 'react-native-android-call-kit';
@@ -227,7 +225,7 @@ class AculabCall extends AcuMobCom {
       ) {
         this.stopCall();
         // this.setState({callAnswered: false});
-        this.endCallKeepCall(this.state.callUuid);
+        this.endCallKeepCall(<string>this.state.callUuid);
         showAlert('Connection Problems', '');
       }
     }, 10000);
@@ -243,7 +241,7 @@ class AculabCall extends AcuMobCom {
         this.state.callAnswered === false &&
         this.state.callState === 'idle'
       ) {
-        RNCallKeep.endCall(this.state.callUuid);
+        RNCallKeep.endCall(<string>this.state.callUuid);
       }
     }, 10000);
   }
@@ -253,9 +251,15 @@ class AculabCall extends AcuMobCom {
    */
   startCall(type: 'service' | 'client', id: string) {
     if (Platform.OS === 'ios') {
-      RNCallKeep.startCall(this.state.callUuid, id, id, 'number', false);
+      RNCallKeep.startCall(
+        <string>this.state.callUuid,
+        id,
+        id,
+        'number',
+        false
+      );
     } else {
-      RNCallKeep.startCall(this.state.callUuid, id, id);
+      RNCallKeep.startCall(<string>this.state.callUuid, id, id);
     }
     console.log('@@@@@@@@@@@@@@@@@@@@ start call');
     switch (type) {
@@ -277,7 +281,7 @@ class AculabCall extends AcuMobCom {
   /**
    * Terminate CallKeep call and reset states
    */
-  endCallKeepCall(endUuid: AcuMobComState['callUuid'], reason?: number) {
+  endCallKeepCall(endUuid: string, reason?: number) {
     if (reason) {
       RNCallKeep.reportEndCallWithUUID(endUuid, reason);
     } else {
@@ -296,7 +300,7 @@ class AculabCall extends AcuMobCom {
    */
   rejectCallCallKeep() {
     try {
-      RNCallKeep.rejectCall(this.state.callUuid);
+      RNCallKeep.rejectCall(<string>this.state.callUuid);
       this.reject();
     } catch (err: any) {
       console.error('rejectCallCallKeep error:', err.message);
@@ -315,7 +319,7 @@ class AculabCall extends AcuMobCom {
       this.state.callOptions.receiveVideo = true;
       this.state.call.answer(this.state.callOptions);
       this.getCallUuid();
-      RNCallKeep.answerIncomingCall(this.state.callUuid);
+      RNCallKeep.answerIncomingCall(<string>this.state.callUuid);
     }
   }
 
@@ -344,7 +348,7 @@ class AculabCall extends AcuMobCom {
         obj.gotremotestream = false;
       }
     }
-    RNCallKeep.setCurrentCallActive(this.state.callUuid);
+    RNCallKeep.setCurrentCallActive(<string>this.state.callUuid);
     console.log('%%%%%%%%%%% THIS KUNDA CALL IS ACTIVE 22');
     this.setState({ connectingCall: false });
     this.setState({ callAnswered: false });
@@ -363,7 +367,7 @@ class AculabCall extends AcuMobCom {
       if (Platform.OS === 'ios') {
         console.log('********** THIS IS iOS DEVICE ********');
         RNCallKeep.displayIncomingCall(
-          this.state.callUuid,
+          <string>this.state.callUuid,
           this.state.incomingCallClientId,
           this.state.incomingCallClientId,
           'number',
@@ -380,7 +384,7 @@ class AculabCall extends AcuMobCom {
         //   0, // Timeout for end call after 20s
         // );
         RNCallKeep.displayIncomingCall(
-          this.state.callUuid,
+          <string>this.state.callUuid,
           this.state.incomingCallClientId,
           this.state.incomingCallClientId
         );
@@ -393,7 +397,7 @@ class AculabCall extends AcuMobCom {
   afterDisconnected() {
     this.setState({ callAnswered: false });
     this.endCallKeepCall(
-      this.state.callUuid,
+      <string>this.state.callUuid,
       CK_CONSTANTS.END_CALL_REASONS.MISSED
     ); //TEST
   }
