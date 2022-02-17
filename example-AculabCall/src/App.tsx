@@ -4,7 +4,7 @@ import { View, StatusBar } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { styles, COLOURS } from './styles';
-import AcuMob from './AcuMob';
+import AcuCall from './AcuCall';
 import { RegisterScreen } from './RegisterScreen';
 
 const Stack = createNativeStackNavigator();
@@ -19,7 +19,7 @@ function AculabCallScreen({ route }: any) {
   } = route.params;
   return (
     <View style={styles.container}>
-      <AcuMob
+      <AcuCall
         webRTCAccessKey={webRTCAccessKey}
         cloudRegionId={cloudRegionId}
         logLevel={logLevel}

@@ -185,7 +185,7 @@ const CallOutComponent = (props: any) => {
         <Text style={styles.basicText}>Service Name</Text>
         <TextInput
           style={styles.input}
-          placeholder={'example: --15993377'}
+          placeholder={'example: webrtcdemo'}
           placeholderTextColor={COLOURS.INPUT_PLACEHOLDER}
           onChangeText={(text) =>
             props.acuMobCom.setState({
@@ -392,7 +392,7 @@ const RegisterButton = () => {
   );
 };
 
-class AcuMob extends AculabCall {
+class AcuCall extends AculabCall {
   componentDidMount() {
     this.register();
     this.initializeCallKeep('Just test App');
@@ -442,4 +442,4 @@ class AcuMob extends AculabCall {
   }
 }
 
-export default AcuMob;
+export default AcuCall;
