@@ -41,10 +41,6 @@ class AculabCall extends AcuMobCom {
     remoteVideoMuted: false,
   };
 
-  // componentDidMount() {
-  //   this.initializeCallKeep('Just test App');
-  // }
-
   /**
    * Run this function before using CallKeep
    * @param {string} appName - App name for iOS
@@ -77,7 +73,7 @@ class AculabCall extends AcuMobCom {
     }
     console.log('$$$ CallKeep Initialized $$$, ', appName);
 
-    // // Add RNCallKit Events
+    // Add RNCallKit Events
     RNCallKeep.addEventListener(
       'didDisplayIncomingCall',
       this.onIncomingCallDisplayed.bind(this)
@@ -110,7 +106,8 @@ class AculabCall extends AcuMobCom {
     DeviceEventEmitter.addListener('endCallAndroid', (payload) => {
       // End call action here
       console.log('endCallAndroid', payload);
-      this.onEndCall();
+      this.rejectCallCallKeep();
+      // this.onEndCall();
       // IncomingCall.dismiss();
     });
     DeviceEventEmitter.addListener('answerCallAndroid', (payload) => {
@@ -195,20 +192,13 @@ class AculabCall extends AcuMobCom {
    * Answer incoming call and set states
    */
   answerCall() {
-    // console.log('$$$ CALL ANSWERED $$$');
     this.setState({ callType: 'client' });
     console.log('$$$ CALL TYPE ANSWERED $$$', this.state.callType);
-    // RNCallKeep.backToForeground();
-    // if (Platform.OS === 'android') {
-    //   IncomingCall.unlockPhone();
-    // }
     if (!this.state.callAnswered) {
       this.answer();
       this.setState({ callAnswered: true });
       this.terminateCallIfNotConnected();
-      // Linking.openURL('aculabcall://');
       console.log('$$$ RUN ANSWER $$$');
-      // RNCallKeep.backToForeground();
     }
     this.setState({ incomingUUI: false });
   }
@@ -248,6 +238,8 @@ class AculabCall extends AcuMobCom {
 
   /**
    * Start outbound call
+   * @param {'service' | 'client'} type define if calling service or client
+   * @param {string} id service or client name to call
    */
   startCall(type: 'service' | 'client', id: string) {
     if (Platform.OS === 'ios') {
@@ -260,6 +252,7 @@ class AculabCall extends AcuMobCom {
       );
     } else {
       RNCallKeep.startCall(<string>this.state.callUuid, id, id);
+      console.log('@@@@@@@@@@@@@@@@@@@@ Android CallKeep start call');
     }
     console.log('@@@@@@@@@@@@@@@@@@@@ start call');
     switch (type) {
@@ -282,6 +275,7 @@ class AculabCall extends AcuMobCom {
    * Terminate CallKeep call and reset states
    */
   endCallKeepCall(endUuid: string, reason?: number) {
+    console.log('£££££££££££ endCallKeepCall', endUuid);
     if (reason) {
       RNCallKeep.reportEndCallWithUUID(endUuid, reason);
     } else {
@@ -320,6 +314,7 @@ class AculabCall extends AcuMobCom {
       this.state.call.answer(this.state.callOptions);
       this.getCallUuid();
       RNCallKeep.answerIncomingCall(<string>this.state.callUuid);
+      console.log('CALL ANSWERED WITH CALLKEEP', this.state.callUuid);
     }
   }
 
@@ -327,7 +322,7 @@ class AculabCall extends AcuMobCom {
    * Assign random UUID to callUuid state if the state doesn't hold any.
    * @param {any} callBack - callback after state is set
    */
-  getCallUuid(callBack?: any) {
+  getCallUuid(callBack?: any): void {
     if (this.state.callUuid === '' || !this.state.callUuid) {
       this.setState({ callUuid: uuid.v4() }, callBack);
     }
@@ -374,15 +369,7 @@ class AculabCall extends AcuMobCom {
           true
         );
       } else {
-        console.log('********** THIS IS ANDROID DEVICE ********');
-        // IncomingCall.display(
-        //   this.state.callUuid, // Call UUID v4
-        //   this.state.incomingCallClientId, // Username
-        //   'https://www.aculab.com/images/logos/Aculab_logo.png', // Avatar URL
-        //   // null, // default avatar
-        //   'Incoming Call', // Info text
-        //   0, // Timeout for end call after 20s
-        // );
+        this.displayCustomIncomingUI();
         RNCallKeep.displayIncomingCall(
           <string>this.state.callUuid,
           this.state.incomingCallClientId,
@@ -394,12 +381,20 @@ class AculabCall extends AcuMobCom {
     this.setState({ callState: 'incoming call' });
   }
 
-  afterDisconnected() {
+  afterDisconnected(): void {
     this.setState({ callAnswered: false });
     this.endCallKeepCall(
       <string>this.state.callUuid,
       CK_CONSTANTS.END_CALL_REASONS.MISSED
     ); //TEST
+  }
+
+  /**
+   * Android only\
+   * Overwrite this function with your custom incoming call UI for android
+   */
+  displayCustomIncomingUI(): void {
+    // your custom UI logic
   }
 }
 
