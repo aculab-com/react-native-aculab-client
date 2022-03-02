@@ -1,4 +1,4 @@
-package com.exampleaculabcall;
+package com.example.aculabcall;
 
 import com.facebook.react.ReactActivity;
 
@@ -12,4 +12,5 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "AculabCallExample";
   }
+
 }

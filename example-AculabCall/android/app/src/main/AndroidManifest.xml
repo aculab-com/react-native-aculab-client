@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.exampleaculabcall">
+  package="com.example.aculabcall">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,9 +11,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS"/>
 
     <application
       android:name=".MainApplication"
@@ -47,6 +45,11 @@
       </service>
 
       <activity android:name="com.incomingcall.UnlockScreenActivity" />
+
+      <activity android:name="com.reactnativeaculabclient.IncomingCallActivity" />
+      <service android:name="com.reactnativeaculabclient.IncomingCallService"
+        android:foregroundServiceType="phoneCall"
+      />
     </application>
 
 </manifest>

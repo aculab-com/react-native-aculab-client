@@ -1,9 +1,9 @@
 import { Platform, DeviceEventEmitter } from 'react-native';
 import AcuMobCom from './AcuMobCom';
 import { showAlert } from './helpers';
-import RNCallKeep, { CONSTANTS as CK_CONSTANTS } from 'react-native-callkeep';
+import RNCallKeep from 'react-native-callkeep';
 // @ts-ignore
-import IncomingCall from 'react-native-android-call-kit';
+// import IncomingCall from 'react-native-android-call-kit';
 import type { AcuMobComState } from './types';
 import uuid from 'react-native-uuid';
 
@@ -96,31 +96,33 @@ class AculabCall extends AcuMobCom {
       // - Start playing ringback if it is an outgoing call
       this.answerCall;
     });
-    // android-not needed
-    // RNCallKeep.addEventListener(
-    //   'didToggleHoldCallAction',
-    //   this.onHoldCallAction.bind(this),
-    // );
+    RNCallKeep.addEventListener(
+      'showIncomingCallUi',
+      ({ handle, callUUID, name }) => {
+        this.displayCustomIncomingUI(handle, callUUID, name);
+        console.log('********** Android showIncomingCallUi ********');
+      }
+    );
     RNCallKeep.addEventListener('endCall', this.rejectCallCallKeep.bind(this));
 
-    DeviceEventEmitter.addListener('endCallAndroid', (payload) => {
+    DeviceEventEmitter.addListener('rejectedCallAndroid', (payload) => {
       // End call action here
-      console.log('endCallAndroid', payload);
-      this.rejectCallCallKeep();
+      console.log('endCallAndroid REACT NATIVE REACT NATIVE', payload);
+      // this.rejectCallCallKeep();
       // this.onEndCall();
       // IncomingCall.dismiss();
     });
-    DeviceEventEmitter.addListener('answerCallAndroid', (payload) => {
-      console.log('answerCallAndroid', payload);
-      if (payload.isHeadless) {
-        // Called from killed state
-        IncomingCall.openAppFromHeadlessMode(payload.uuid);
-        this.answerCall();
-      } else {
-        // Called from background state
-        IncomingCall.backToForeground();
-        this.answerCall();
-      }
+    DeviceEventEmitter.addListener('answeredCallAndroid', (payload) => {
+      console.log('answerCallAndroid REACT NATIVE REACT NATIVE', payload);
+      // if (payload.isHeadless) {
+      //   // Called from killed state
+      //   IncomingCall.openAppFromHeadlessMode(payload.uuid);
+      //   this.answerCall();
+      // } else {
+      //   // Called from background state
+      //   IncomingCall.backToForeground();
+      //   this.answerCall();
+      // }
     });
   }
 
@@ -200,6 +202,7 @@ class AculabCall extends AcuMobCom {
       this.terminateCallIfNotConnected();
       console.log('$$$ RUN ANSWER $$$');
     }
+    RNCallKeep.setCurrentCallActive(<string>this.state.callUuid);
     this.setState({ incomingUUI: false });
   }
 
@@ -275,12 +278,11 @@ class AculabCall extends AcuMobCom {
    * Terminate CallKeep call and reset states
    */
   endCallKeepCall(endUuid: string, reason?: number) {
-    console.log('£££££££££££ endCallKeepCall', endUuid);
     if (reason) {
       RNCallKeep.reportEndCallWithUUID(endUuid, reason);
     } else {
       RNCallKeep.endCall(endUuid);
-      // android-not needed
+      console.log('£££££££££££ endCallKeepCall', endUuid);
     }
     this.setState({ callUuid: '' });
     this.setState({ callType: 'none' });
@@ -343,7 +345,7 @@ class AculabCall extends AcuMobCom {
         obj.gotremotestream = false;
       }
     }
-    RNCallKeep.setCurrentCallActive(<string>this.state.callUuid);
+    // RNCallKeep.setCurrentCallActive(<string>this.state.callUuid);
     console.log('%%%%%%%%%%% THIS KUNDA CALL IS ACTIVE 22');
     this.setState({ connectingCall: false });
     this.setState({ callAnswered: false });
@@ -369,32 +371,40 @@ class AculabCall extends AcuMobCom {
           true
         );
       } else {
-        this.displayCustomIncomingUI();
+        // this.displayCustomIncomingUI();
         RNCallKeep.displayIncomingCall(
           <string>this.state.callUuid,
           this.state.incomingCallClientId,
           this.state.incomingCallClientId
         );
+        // console.log('********** Android onIncoming ********', this.state.callUuid);
+        // console.log('********** Android onIncoming ********', this.state.incomingCallClientId);
       }
     }
-    console.log('$$$ UUID $$$ ', this.state.callUuid);
+    // console.log('$$$ UUID $$$ ', this.state.callUuid);
     this.setState({ callState: 'incoming call' });
   }
 
   afterDisconnected(): void {
     this.setState({ callAnswered: false });
-    this.endCallKeepCall(
-      <string>this.state.callUuid,
-      CK_CONSTANTS.END_CALL_REASONS.MISSED
-    ); //TEST
+    this.endCallKeepCall(<string>this.state.callUuid); //TEST
+    console.log('*********8 DISCONNEDCTED FIRED UP ********');
   }
 
   /**
    * Android only\
    * Overwrite this function with your custom incoming call UI for android
    */
-  displayCustomIncomingUI(): void {
+  displayCustomIncomingUI(
+    handle?: string,
+    callUUID?: string,
+    name?: string
+  ): void {
     // your custom UI logic
+    console.log(
+      '********** Android displayCustomIncomingUI handle, uuid, name ********',
+      { handle, callUUID, name }
+    );
   }
 }
 

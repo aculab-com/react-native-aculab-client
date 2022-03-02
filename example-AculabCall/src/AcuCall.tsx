@@ -13,6 +13,8 @@ import {
   AculabCall,
   turnOnSpeaker,
   deleteSpaces,
+  incomingCallNotification,
+  cancelIncomingCallNotification,
 } from 'react-native-aculab-client';
 import { MenuButton } from './components/MenuButton';
 import { KeypadButton } from './components/KeypadButton';
@@ -123,23 +125,6 @@ const DialKeypad = (props: any) => {
   );
 };
 
-// const ButtonsIncoming = (props: any) => {
-//   return (
-//     <View style={styles.callButtonsContainer}>
-//       <CallButton
-//         title={'Reject'}
-//         colour={'red'}
-//         onPress={() => props.aculabCall.rejectCallCallKeep()}
-//       />
-//       <CallButton
-//         title={'Accept'}
-//         colour={'green'}
-//         onPress={() => props.aculabCall.answerCall()}
-//       />
-//     </View>
-//   );
-// };
-
 const ClientCallButtons = (props: any) => {
   var videoIcon: string = '';
   var audioIcon: string = '';
@@ -232,6 +217,22 @@ const CallOutComponent = (props: any) => {
               )
             )
           }
+        />
+        <MenuButton
+          title={'test'}
+          onPress={() =>
+            incomingCallNotification(
+              'aculab_call_channel_id',
+              'aculab_channel_name',
+              'Incoming call notification description',
+              'Incoming call context',
+              1986
+            )
+          }
+        />
+        <MenuButton
+          title={'test 2'}
+          onPress={() => cancelIncomingCallNotification()}
         />
       </View>
     </View>
@@ -404,11 +405,11 @@ class AcuCall extends AculabCall {
     this.unregister();
   }
 
-  displayCustomIncomingUI(): void {
+  displayCustomIncomingUI(name: string, callUUID: string): void {
     console.log('********** THIS IS ANDROID DEVICE ********');
     IncomingCall.display(
-      this.state.callUuid, // Call UUID v4
-      this.state.incomingCallClientId, // Username
+      callUUID, // Call UUID v4
+      name, // Username
       // 'https://www.aculab.com/images/logos/Aculab_logo.png', // Avatar URL
       null, // default avatar
       'Incoming Call', // Info text
