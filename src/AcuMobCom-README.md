@@ -22,7 +22,7 @@ Please visit the [Demo App](https://github.com/aculab-com/react-native-aculab-cl
 
 ### Install the package
 
-Instal react-native-AcuMobCom and react-native-webrtc.
+Install react-native-AcuMobCom and react-native-webrtc.
 
 ```sh
 npm install --save react-native-acumobcom react-native-webrtc
@@ -120,9 +120,9 @@ class YourClassComponent extends AcuMobCom {
 
 | Parameter         | Type                  | Description                                                                               |
 |--------------     |----------             |------------                                                                               |
-| webRTCAccessKey   | string                | WebRTC Access Key to the cloud you are using                                              |
+| webRTCAccessKey   | string                | [WebRTC Access Key](https://cloud.aculab.com/home/webrtcsettings) for the cloud you are using                                              |
 | webRTCToken       | string                | WebRTC Token returned by getToken function                                                |
-| cloudRegionId     | string                | Specify the cloud region ID in format 0-2-0                                               |
+| cloudRegionId     | string                | Specify the [cloud region ID](https://www.aculab.com/cloud/guides/cloud-regions/) in format 0-2-0                                               |
 | logLevel          | string &#124; number  | value between 0 and 6 inclusive. 0 disables logging and 6 is the most detailed logging.   |
 | registerClientId  | string                | Unique client ID for registration                                                         |
 
@@ -132,7 +132,7 @@ class YourClassComponent extends AcuMobCom {
 
 ### 2. Use WebRTC Token to [register](https://github.com/aculab-com/react-native-aculab-client/blob/431df94932dee1adc65a07d6517b1f5328098885/src/AcuMobCom.ts#L84) a client id
 
-### 3. If registration is successful you obtain a client object and AcuMobCom can be used to it's full extend
+### 3. If registration is successful you obtain a client object and AcuMobCom can be used to its full extent
 
 **NOTE: that registration can only occur when the callState is 'idle'.**
 
@@ -234,7 +234,7 @@ import {turnOnSpeaker} from 'react-native-aculab-client';
 
 MIT
 
-Copyright (c) 2021 Aculab
+Copyright (c) 2022 Aculab
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

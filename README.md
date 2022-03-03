@@ -16,7 +16,7 @@ This package implements [Aculab](https://www.aculab.com/) webRTC services in the
 [![react-native-base64](https://img.shields.io/npm/dependency-version/react-native-acumobcom/react-native-base64)](https://www.npmjs.com/package/react-native-base64)
 [![react-native-webrtc](https://img.shields.io/npm/dependency-version/react-native-acumobcom/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
 
-AcuMobCom is a react native component allowing iOS and Android platforms to use Aculab Services and Pear to Pear video calls
+AcuMobCom is a react native component allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls
 
 AcuMobCom [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AcuMobCom-README.md)
 
@@ -28,7 +28,7 @@ AcuMobCom [Example (Demo) app README](https://github.com/aculab-com/react-native
 
 MIT
 
-Copyright (c) 2021 Aculab
+Copyright (c) 2022 Aculab
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
