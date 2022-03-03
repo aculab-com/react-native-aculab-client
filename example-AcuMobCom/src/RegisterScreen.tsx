@@ -12,14 +12,12 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 type Props = NativeStackNavigationProp<AuthStackParam, 'AcuMobCom'>;
 
 export const RegisterScreen = () => {
-  const [webRTCAccessKey, setWebRTCAccessKey] = useState(
-    'heh0zprmk7okgtl90dx9i0xao'
-  );
-  const [apiAccessKey, setApiAccessKey] = useState('BIRnMDn8Vgeel8JwPmnwFQ');
-  const [cloudRegionId, setCloudRegionId] = useState('0-2-0');
-  const [cloudUsername, setCloudUsername] = useState('martin.folke@aculab.com');
-  const [logLevel, setLogLevel] = useState('1');
-  const [registerClientId, setRegisterClientId] = useState('martin');
+  const [webRTCAccessKey, setWebRTCAccessKey] = useState('');
+  const [apiAccessKey, setApiAccessKey] = useState('');
+  const [cloudRegionId, setCloudRegionId] = useState('');
+  const [cloudUsername, setCloudUsername] = useState('');
+  const [logLevel, setLogLevel] = useState('');
+  const [registerClientId, setRegisterClientId] = useState('');
   const [webRTCToken, setWebRTCToken] = useState('None');
   const navigation = useNavigation<Props>();
 
@@ -27,7 +25,7 @@ export const RegisterScreen = () => {
     try {
       let token = await getToken({
         registerClientId: registerClientId,
-        tokenLifeTime: 6000,
+        tokenLifeTime: 60000,
         enableIncomingCall: true,
         callClientRange: '*',
         cloudRegionId: cloudRegionId,
@@ -38,7 +36,7 @@ export const RegisterScreen = () => {
     } catch {
       showAlert(
         '',
-        'Account credential are incorrect: Check API Access Key, Cloud Region ID and Cloud Username'
+        'Credential are incorrect: Check API Access Key, Cloud Region ID, Cloud Username and Register Client ID'
       );
     }
   };

@@ -1,9 +1,9 @@
 import { Platform, DeviceEventEmitter } from 'react-native';
 import AcuMobCom from './AcuMobCom';
+import { incomingCallNotification } from './AculabClientModule';
 import { showAlert } from './helpers';
 import RNCallKeep from 'react-native-callkeep';
 // @ts-ignore
-// import IncomingCall from 'react-native-android-call-kit';
 import type { AcuMobComState } from './types';
 import uuid from 'react-native-uuid';
 
@@ -60,7 +60,7 @@ class AculabCall extends AcuMobCom {
           additionalPermissions: [],
           selfManaged: true,
           foregroundService: {
-            channelId: 'fcm_call_channel',
+            channelId: 'acu_incoming_call',
             channelName: 'Foreground service for my app',
             notificationTitle: 'My app is running on background',
             notificationIcon: 'Path to the resource icon of the notification',
@@ -105,24 +105,17 @@ class AculabCall extends AcuMobCom {
     );
     RNCallKeep.addEventListener('endCall', this.rejectCallCallKeep.bind(this));
 
+    // Android ONLY
     DeviceEventEmitter.addListener('rejectedCallAndroid', (payload) => {
       // End call action here
       console.log('endCallAndroid REACT NATIVE REACT NATIVE', payload);
-      // this.rejectCallCallKeep();
-      // this.onEndCall();
-      // IncomingCall.dismiss();
+      this.rejectCallCallKeep();
     });
+
+    // Android ONLY
     DeviceEventEmitter.addListener('answeredCallAndroid', (payload) => {
       console.log('answerCallAndroid REACT NATIVE REACT NATIVE', payload);
-      // if (payload.isHeadless) {
-      //   // Called from killed state
-      //   IncomingCall.openAppFromHeadlessMode(payload.uuid);
-      //   this.answerCall();
-      // } else {
-      //   // Called from background state
-      //   IncomingCall.backToForeground();
-      //   this.answerCall();
-      // }
+      this.answerCall();
     });
   }
 
@@ -138,9 +131,6 @@ class AculabCall extends AcuMobCom {
     // this.endCallKeepCall(this.state.callUuid);
     // }
     this.setState({ incomingUUI: false });
-    // if (Platform.OS === 'android') {
-    //   IncomingCall.killApp();
-    // }
   }
 
   /**
@@ -195,12 +185,10 @@ class AculabCall extends AcuMobCom {
    */
   answerCall() {
     this.setState({ callType: 'client' });
-    console.log('$$$ CALL TYPE ANSWERED $$$', this.state.callType);
     if (!this.state.callAnswered) {
       this.answer();
       this.setState({ callAnswered: true });
       this.terminateCallIfNotConnected();
-      console.log('$$$ RUN ANSWER $$$');
     }
     RNCallKeep.setCurrentCallActive(<string>this.state.callUuid);
     this.setState({ incomingUUI: false });
@@ -371,7 +359,13 @@ class AculabCall extends AcuMobCom {
           true
         );
       } else {
-        // this.displayCustomIncomingUI();
+        incomingCallNotification(
+          'acu_incoming_call',
+          'Incoming call',
+          'channel used to display incoming call notification',
+          this.state.incomingCallClientId,
+          1986
+        );
         RNCallKeep.displayIncomingCall(
           <string>this.state.callUuid,
           this.state.incomingCallClientId,

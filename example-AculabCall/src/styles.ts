@@ -109,4 +109,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     bottom: 20,
   },
+  incomingContainer: {
+    marginTop: 100,
+  },
 });

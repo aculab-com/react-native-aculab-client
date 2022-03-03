@@ -22,7 +22,6 @@ import { CallButton } from './components/CallButton';
 import { RoundButton } from './components/RoundButton';
 import { useNavigation } from '@react-navigation/native';
 // @ts-ignore
-import IncomingCall from 'react-native-android-call-kit';
 
 const MainCallButtons = (props: any) => {
   return (
@@ -333,11 +332,13 @@ const DisplayClientCall = (props: any) => {
 const CallDisplayHandler = (props: any) => {
   if (props.aculabCall.state.callState === 'incoming call') {
     return (
-      <View style={styles.center}>
-        <Text style={styles.callingText}>Incoming Call</Text>
-        <Text style={styles.callingText}>
-          {props.aculabCall.state.incomingCallClientId}
-        </Text>
+      <View style={styles.incomingContainer}>
+        <View style={styles.center}>
+          <Text style={styles.callingText}>Incoming Call</Text>
+          <Text style={styles.callingText}>
+            {props.aculabCall.state.incomingCallClientId}
+          </Text>
+        </View>
       </View>
     );
   } else if (props.aculabCall.state.callState === 'idle') {
@@ -403,18 +404,6 @@ class AcuCall extends AculabCall {
 
   componentWillUnmount() {
     this.unregister();
-  }
-
-  displayCustomIncomingUI(name: string, callUUID: string): void {
-    console.log('********** THIS IS ANDROID DEVICE ********');
-    IncomingCall.display(
-      callUUID, // Call UUID v4
-      name, // Username
-      // 'https://www.aculab.com/images/logos/Aculab_logo.png', // Avatar URL
-      null, // default avatar
-      'Incoming Call', // Info text
-      0 // Timeout for end call after 20s
-    );
   }
 
   CallHeadComponent = (): any => {
