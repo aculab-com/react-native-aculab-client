@@ -28,8 +28,7 @@ export const getToken = async (webRTCToken: WebRTCToken): Promise<string> => {
     body: '',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization':
-        'Basic ' + base64.encode(username + ':' + webRTCToken.apiAccessKey),
+      'Authorization': 'Basic ' + base64.encode(username + ':' + webRTCToken.apiAccessKey),
     },
   })
     .then((response) => {
@@ -129,9 +128,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
     if (this.state.client === null) {
       console.log('Register the client first');
     } else if (this.state.call) {
-      console.log(
-        'One call is in progress already (only one call at a time is permitted)'
-      );
+      console.log('One call is in progress already (only one call at a time is permitted)');
     } else {
       passed = true;
     }
@@ -148,21 +145,18 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
       console.log('enter client ID to call');
       return;
     } else if (this.callCheck()) {
-      this.setState(
-        { callClientId: deleteSpaces(this.state.callClientId) },
-        () => {
-          this.setState({ callState: 'calling' });
-          this.state.callOptions.constraints = { audio: true, video: true };
-          this.state.callOptions.receiveAudio = true;
-          this.state.callOptions.receiveVideo = true;
-          this.state.call = this.state.client.callClient(
-            this.state.callClientId,
-            this.state.webRTCToken,
-            this.state.callOptions
-          );
-          this.setupCbCallOut(this);
-        }
-      );
+      this.setState({ callClientId: deleteSpaces(this.state.callClientId) }, () => {
+        this.setState({ callState: 'calling' });
+        this.state.callOptions.constraints = { audio: true, video: true };
+        this.state.callOptions.receiveAudio = true;
+        this.state.callOptions.receiveVideo = true;
+        this.state.call = this.state.client.callClient(
+          this.state.callClientId,
+          this.state.webRTCToken,
+          this.state.callOptions
+        );
+        this.setupCbCallOut(this);
+      });
     }
   }
 
@@ -175,15 +169,10 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
       console.log('enter service name to call');
       return;
     } else if (this.callCheck()) {
-      this.setState(
-        { serviceName: deleteSpaces(this.state.serviceName) },
-        () => {
-          this.state.call = this.state.client.callService(
-            this.state.serviceName
-          );
-          this.setupCbCallOut(this);
-        }
-      );
+      this.setState({ serviceName: deleteSpaces(this.state.serviceName) }, () => {
+        this.state.call = this.state.client.callService(this.state.serviceName);
+        this.setupCbCallOut(this);
+      });
     }
   }
 

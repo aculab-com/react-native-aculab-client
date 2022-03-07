@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  ScrollView,
-  SafeAreaView,
-  Image,
-} from 'react-native';
+import { View, Text, TextInput, ScrollView, SafeAreaView, Image } from 'react-native';
 import { styles, COLOURS } from './styles';
 import { RTCView } from 'react-native-webrtc';
 import {
@@ -35,9 +28,8 @@ const MainCallButtons = (props: any) => {
         title={'Speaker'}
         colour={COLOURS.SPEAKER_BUTTON}
         onPress={() =>
-          props.aculabCall.setState(
-            { speakerOn: !props.aculabCall.state.speakerOn },
-            () => turnOnSpeaker(props.aculabCall.state.speakerOn)
+          props.aculabCall.setState({ speakerOn: !props.aculabCall.state.speakerOn }, () =>
+            turnOnSpeaker(props.aculabCall.state.speakerOn)
           )
         }
       />
@@ -51,73 +43,33 @@ const DialKeypad = (props: any) => {
       {props.aculabCall.state.callState === 'calling' ||
       props.aculabCall.state.callState === 'ringing' ? (
         <View>
-          <Text style={styles.callingText}>
-            Calling {props.aculabCall.state.serviceName}
-          </Text>
+          <Text style={styles.callingText}>Calling {props.aculabCall.state.serviceName}</Text>
         </View>
       ) : (
         <View>
-          <Text style={styles.callingText}>
-            Service {props.aculabCall.state.serviceName}
-          </Text>
+          <Text style={styles.callingText}>Service {props.aculabCall.state.serviceName}</Text>
         </View>
       )}
       <View>
         <View style={styles.callButtonsContainer}>
-          <KeypadButton
-            title={'1'}
-            onPress={() => props.aculabCall.sendDtmf('1')}
-          />
-          <KeypadButton
-            title={'2'}
-            onPress={() => props.aculabCall.sendDtmf('2')}
-          />
-          <KeypadButton
-            title={'3'}
-            onPress={() => props.aculabCall.sendDtmf('3')}
-          />
+          <KeypadButton title={'1'} onPress={() => props.aculabCall.sendDtmf('1')} />
+          <KeypadButton title={'2'} onPress={() => props.aculabCall.sendDtmf('2')} />
+          <KeypadButton title={'3'} onPress={() => props.aculabCall.sendDtmf('3')} />
         </View>
         <View style={styles.callButtonsContainer}>
-          <KeypadButton
-            title={'4'}
-            onPress={() => props.aculabCall.sendDtmf('4')}
-          />
-          <KeypadButton
-            title={'5'}
-            onPress={() => props.aculabCall.sendDtmf('5')}
-          />
-          <KeypadButton
-            title={'6'}
-            onPress={() => props.aculabCall.sendDtmf('6')}
-          />
+          <KeypadButton title={'4'} onPress={() => props.aculabCall.sendDtmf('4')} />
+          <KeypadButton title={'5'} onPress={() => props.aculabCall.sendDtmf('5')} />
+          <KeypadButton title={'6'} onPress={() => props.aculabCall.sendDtmf('6')} />
         </View>
         <View style={styles.callButtonsContainer}>
-          <KeypadButton
-            title={'7'}
-            onPress={() => props.aculabCall.sendDtmf('7')}
-          />
-          <KeypadButton
-            title={'8'}
-            onPress={() => props.aculabCall.sendDtmf('8')}
-          />
-          <KeypadButton
-            title={'9'}
-            onPress={() => props.aculabCall.sendDtmf('9')}
-          />
+          <KeypadButton title={'7'} onPress={() => props.aculabCall.sendDtmf('7')} />
+          <KeypadButton title={'8'} onPress={() => props.aculabCall.sendDtmf('8')} />
+          <KeypadButton title={'9'} onPress={() => props.aculabCall.sendDtmf('9')} />
         </View>
         <View style={styles.callButtonsContainer}>
-          <KeypadButton
-            title={'*'}
-            onPress={() => props.aculabCall.sendDtmf('*')}
-          />
-          <KeypadButton
-            title={'0'}
-            onPress={() => props.aculabCall.sendDtmf('0')}
-          />
-          <KeypadButton
-            title={'#'}
-            onPress={() => props.aculabCall.sendDtmf('#')}
-          />
+          <KeypadButton title={'*'} onPress={() => props.aculabCall.sendDtmf('*')} />
+          <KeypadButton title={'0'} onPress={() => props.aculabCall.sendDtmf('0')} />
+          <KeypadButton title={'#'} onPress={() => props.aculabCall.sendDtmf('#')} />
         </View>
       </View>
     </View>
@@ -139,16 +91,12 @@ const ClientCallButtons = (props: any) => {
   }
   return (
     <View style={styles.callButtonsContainer}>
-      <RoundButton
-        iconName={'camera-reverse-outline'}
-        onPress={() => props.aculabCall.swapCam()}
-      />
+      <RoundButton iconName={'camera-reverse-outline'} onPress={() => props.aculabCall.swapCam()} />
       <RoundButton
         iconName={videoIcon}
         onPress={() =>
-          props.aculabCall.setState(
-            { camera: !props.aculabCall.state.camera },
-            () => props.aculabCall.mute()
+          props.aculabCall.setState({ camera: !props.aculabCall.state.camera }, () =>
+            props.aculabCall.mute()
           )
         }
       />
@@ -185,10 +133,7 @@ const CallOutComponent = (props: any) => {
           title={'Call Service'}
           onPress={() =>
             props.aculabCall.getCallUuid(() =>
-              props.aculabCall.startCall(
-                'service',
-                props.aculabCall.state.serviceName
-              )
+              props.aculabCall.startCall('service', props.aculabCall.state.serviceName)
             )
           }
         />
@@ -210,10 +155,7 @@ const CallOutComponent = (props: any) => {
           title={'Call Client'}
           onPress={() =>
             props.aculabCall.getCallUuid(() =>
-              props.aculabCall.startCall(
-                'client',
-                props.aculabCall.state.callClientId
-              )
+              props.aculabCall.startCall('client', props.aculabCall.state.callClientId)
             )
           }
         />
@@ -229,10 +171,7 @@ const CallOutComponent = (props: any) => {
             )
           }
         />
-        <MenuButton
-          title={'test 2'}
-          onPress={() => cancelIncomingCallNotification()}
-        />
+        <MenuButton title={'test 2'} onPress={() => cancelIncomingCallNotification()} />
       </View>
     </View>
   );
@@ -247,37 +186,24 @@ const DisplayClientCall = (props: any) => {
     ) {
       return (
         <View style={styles.center}>
-          <Text style={styles.callingText}>
-            Calling {props.aculabCall.state.callClientId}
-          </Text>
+          <Text style={styles.callingText}>Calling {props.aculabCall.state.callClientId}</Text>
         </View>
       );
     } else {
       return (
         <View style={styles.center}>
-          <Text style={styles.callingText}>
-            {props.aculabCall.state.callClientId}
-          </Text>
+          <Text style={styles.callingText}>{props.aculabCall.state.callClientId}</Text>
         </View>
       );
     }
   } else {
-    if (
-      props.aculabCall.state.localVideoMuted &&
-      !props.aculabCall.state.remoteVideoMuted
-    ) {
+    if (props.aculabCall.state.localVideoMuted && !props.aculabCall.state.remoteVideoMuted) {
       return (
         <View style={styles.vidview}>
-          <RTCView
-            streamURL={props.aculabCall.state.remoteStream.toURL()}
-            style={styles.rtcview}
-          />
+          <RTCView streamURL={props.aculabCall.state.remoteStream.toURL()} style={styles.rtcview} />
         </View>
       );
-    } else if (
-      props.aculabCall.state.remoteVideoMuted &&
-      !props.aculabCall.state.localVideoMuted
-    ) {
+    } else if (props.aculabCall.state.remoteVideoMuted && !props.aculabCall.state.localVideoMuted) {
       return (
         <View style={styles.vidview}>
           <Image
@@ -295,10 +221,7 @@ const DisplayClientCall = (props: any) => {
           </View>
         </View>
       );
-    } else if (
-      props.aculabCall.state.remoteVideoMuted &&
-      props.aculabCall.state.localVideoMuted
-    ) {
+    } else if (props.aculabCall.state.remoteVideoMuted && props.aculabCall.state.localVideoMuted) {
       return (
         <View>
           <Image
@@ -313,10 +236,7 @@ const DisplayClientCall = (props: any) => {
     } else {
       return (
         <View style={styles.vidview}>
-          <RTCView
-            streamURL={props.aculabCall.state.remoteStream.toURL()}
-            style={styles.rtcview}
-          />
+          <RTCView streamURL={props.aculabCall.state.remoteStream.toURL()} style={styles.rtcview} />
           <View style={styles.rtc}>
             <RTCView
               streamURL={props.aculabCall.state.localStream.toURL()}
@@ -335,9 +255,7 @@ const CallDisplayHandler = (props: any) => {
       <View style={styles.incomingContainer}>
         <View style={styles.center}>
           <Text style={styles.callingText}>Incoming Call</Text>
-          <Text style={styles.callingText}>
-            {props.aculabCall.state.incomingCallClientId}
-          </Text>
+          <Text style={styles.callingText}>{props.aculabCall.state.incomingCallClientId}</Text>
         </View>
       </View>
     );
@@ -388,10 +306,7 @@ const RegisterButton = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.registrationButton}>
-      <RoundButton
-        iconName={'cog-outline'}
-        onPress={() => navigation.goBack()}
-      />
+      <RoundButton iconName={'cog-outline'} onPress={() => navigation.goBack()} />
     </View>
   );
 };
@@ -413,17 +328,11 @@ class AcuCall extends AculabCall {
           <Text style={styles.basicText}>Aculab - Call Demo</Text>
           {this.state.client !== null ? (
             <View>
-              <Text style={styles.basicText}>
-                Registered as {this.props.registerClientId}
-              </Text>
-              <Text style={styles.basicText}>
-                State: {this.state.callState}
-              </Text>
+              <Text style={styles.basicText}>Registered as {this.props.registerClientId}</Text>
+              <Text style={styles.basicText}>State: {this.state.callState}</Text>
             </View>
           ) : (
-            <Text style={styles.warningText}>
-              Please Use Correct Registration Credentials
-            </Text>
+            <Text style={styles.warningText}>Please Use Correct Registration Credentials</Text>
           )}
         </View>
         {this.state.callState === 'idle' ? <RegisterButton /> : <View />}

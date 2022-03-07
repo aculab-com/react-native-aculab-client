@@ -53,8 +53,7 @@ class AculabCall extends AcuMobCom {
         },
         android: {
           alertTitle: 'Permissions required',
-          alertDescription:
-            'This application needs to access your phone accounts',
+          alertDescription: 'This application needs to access your phone accounts',
           cancelButton: 'Cancel',
           okButton: 'ok',
           additionalPermissions: [],
@@ -74,16 +73,11 @@ class AculabCall extends AcuMobCom {
     console.log('$$$ CallKeep Initialized $$$, ', appName);
 
     // Add RNCallKit Events
-    RNCallKeep.addEventListener('didDisplayIncomingCall', () =>
-      this.onIncomingCallDisplayed()
-    );
+    RNCallKeep.addEventListener('didDisplayIncomingCall', () => this.onIncomingCallDisplayed());
 
     RNCallKeep.addEventListener('answerCall', this.answerCall.bind(this));
 
-    RNCallKeep.addEventListener(
-      'didPerformDTMFAction',
-      this.onPerformDTMFAction.bind(this)
-    );
+    RNCallKeep.addEventListener('didPerformDTMFAction', this.onPerformDTMFAction.bind(this));
 
     RNCallKeep.addEventListener(
       'didReceiveStartCallAction',
@@ -103,13 +97,10 @@ class AculabCall extends AcuMobCom {
 
     // Android ONLY
     if (Platform.OS === 'android') {
-      RNCallKeep.addEventListener(
-        'showIncomingCallUi',
-        ({ handle, callUUID, name }) => {
-          this.displayCustomIncomingUI(handle, callUUID, name);
-          console.log('********** Android showIncomingCallUi ********');
-        }
-      );
+      RNCallKeep.addEventListener('showIncomingCallUi', ({ handle, callUUID, name }) => {
+        this.displayCustomIncomingUI(handle, callUUID, name);
+        console.log('********** Android showIncomingCallUi ********');
+      });
     }
 
     RNCallKeep.addEventListener('endCall', this.rejectCallCallKeep.bind(this));
@@ -180,10 +171,7 @@ class AculabCall extends AcuMobCom {
   onPerformDTMFAction({ digits }: any) {
     this.sendDtmf(digits);
     RNCallKeep.removeEventListener('didPerformDTMFAction');
-    RNCallKeep.addEventListener(
-      'didPerformDTMFAction',
-      this.onPerformDTMFAction.bind(this)
-    );
+    RNCallKeep.addEventListener('didPerformDTMFAction', this.onPerformDTMFAction.bind(this));
   }
 
   /**
@@ -240,13 +228,7 @@ class AculabCall extends AcuMobCom {
    */
   startCall(type: 'service' | 'client', id: string) {
     if (Platform.OS === 'ios') {
-      RNCallKeep.startCall(
-        <string>this.state.callUuid,
-        id,
-        id,
-        'number',
-        false
-      );
+      RNCallKeep.startCall(<string>this.state.callUuid, id, id, 'number', false);
     } else {
       RNCallKeep.startCall(<string>this.state.callUuid, id, id);
       console.log('@@@@@@@@@@@@@@@@@@@@ Android CallKeep start call');
@@ -393,16 +375,13 @@ class AculabCall extends AcuMobCom {
    * Android only\
    * Overwrite this function with your custom incoming call UI for android
    */
-  displayCustomIncomingUI(
-    handle?: string,
-    callUUID?: string,
-    name?: string
-  ): void {
+  displayCustomIncomingUI(handle?: string, callUUID?: string, name?: string): void {
     // your custom UI logic
-    console.log(
-      '********** Android displayCustomIncomingUI handle, uuid, name ********',
-      { handle, callUUID, name }
-    );
+    console.log('********** Android displayCustomIncomingUI handle, uuid, name ********', {
+      handle,
+      callUUID,
+      name,
+    });
   }
 }
 
