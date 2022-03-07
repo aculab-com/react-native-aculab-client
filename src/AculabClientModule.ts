@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 
 const { AculabClientModule } = NativeModules;
 
@@ -41,6 +41,10 @@ export function incomingCallNotification(
   contentText: string,
   notificationId: number
 ): void {
+  if (Platform.OS !== 'android') {
+    console.log('incomingCallNotification is Android function ONLY');
+    return;
+  }
   AculabClientModule.incomingCallNotification(
     channelId,
     channelName,
@@ -51,9 +55,14 @@ export function incomingCallNotification(
 }
 
 /**
+ * Android ONLY\
  * Cancels currently displayed Incoming call notification called by incomingCallNotification.\
  * Stops foreground service created by incomingCallNotification.
  */
 export function cancelIncomingCallNotification(): void {
+  if (Platform.OS !== 'android') {
+    console.log('cancelIncomingCallNotification is Android function ONLY');
+    return;
+  }
   AculabClientModule.cancelIncomingCallNotification();
 }
