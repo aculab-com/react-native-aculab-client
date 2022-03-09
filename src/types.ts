@@ -53,7 +53,8 @@ export interface AcuMobComState {
   callUuid?: string | number[];
   callType?: 'none' | 'client' | 'service';
   callAnswered?: boolean;
-  incomingUUI?: boolean;
+  incomingUI?: boolean;
+  callKeepCallActive?: boolean;
 
   // use this flag for notifications
   connectingCall?: boolean;

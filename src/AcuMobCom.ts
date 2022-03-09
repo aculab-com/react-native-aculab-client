@@ -71,7 +71,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
     callUuid: '',
     callType: 'none',
     callAnswered: false,
-    incomingUUI: false,
+    incomingUI: false,
     connectingCall: false,
   };
 
@@ -362,7 +362,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
   /**
    * Called when incoming/outgoing call is disconnected\
    * set states\
-   * has function afterDisconnected - overwrite this function to inject your logic into callDisconnected function
+   * has function disconnectedInjection - overwrite this function to inject your logic into callDisconnected function
    * @param {any} obj AcuMobCom object or Incoming call object
    */
   callDisconnected(obj: any) {
@@ -381,15 +381,23 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
     this.state.callOptions.constraints = { audio: false, video: false };
     this.state.callOptions.receiveAudio = false;
     this.state.callOptions.receiveVideo = false;
-    this.afterDisconnected();
+    this.disconnectedInjection();
   }
 
   /**
    * Called within callDisconnect function\
    * Overwrite this function to inject logic into callDisconnected function
    */
-  afterDisconnected() {
+  disconnectedInjection() {
     // Overwrite this function to inject logic into callDisconnected
+  }
+
+  /**
+   * Called within connected function\
+   * Overwrite this function to inject logic into connected function
+   */
+  connectedInjection() {
+    // Overwrite this function to inject logic into connected
   }
 
   // onMedia CB
@@ -426,9 +434,9 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
    */
   connected(obj: any) {
     obj.call.call_state = 'Connected';
-    //Add to media event instead/also?
     this.setState({ localStream: this.getLocalStream() });
     this.setState({ remoteStream: obj.call._remote_stream[0] });
+    this.connectedInjection();
   }
 
   /**
