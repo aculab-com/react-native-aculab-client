@@ -1,6 +1,6 @@
 import { Platform, DeviceEventEmitter, PermissionsAndroid } from 'react-native';
 import AcuMobCom from './AcuMobCom';
-import { incomingCallNotification } from './AculabClientModule';
+import { incomingCallNotification, cancelIncomingCallNotification } from './AculabClientModule';
 // import { showAlert } from './helpers';
 import RNCallKeep from 'react-native-callkeep';
 // @ts-ignore
@@ -102,6 +102,7 @@ class AculabCall extends AcuMobCom {
     if (Platform.OS === 'android') {
       RNCallKeep.addEventListener('showIncomingCallUi', ({ handle, callUUID, name }) => {
         this.displayCustomIncomingUI(handle, callUUID, name);
+        this.setState({ callKeepCallActive: true });
         console.log('********** Android showIncomingCallUi ********');
       });
     }
@@ -311,6 +312,9 @@ class AculabCall extends AcuMobCom {
   disconnectedInjection(): void {
     if (this.state.callKeepCallActive === true) {
       this.endCallKeepCall(<string>this.state.callUuid); //TEST
+      if (Platform.OS === 'android' && this.state.incomingUI) {
+        cancelIncomingCallNotification();
+      }
       console.log('*****************');
     }
     console.log('*********8 DISCONNEDCTED FIRED UP ********');
