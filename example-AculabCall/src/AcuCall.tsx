@@ -322,6 +322,7 @@ class AcuCall extends AculabCall {
 
   componentWillUnmount() {
     this.unregister();
+    this.destroyListeners();
   }
 
   CallHeadComponent = (): any => {

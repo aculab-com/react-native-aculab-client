@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from 'react-native';
+import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
 
 const { AculabClientModule } = NativeModules;
 
@@ -66,3 +66,8 @@ export function cancelIncomingCallNotification(): void {
   }
   AculabClientModule.cancelIncomingCallNotification();
 }
+
+/**
+ * use for listeners from AculabClientModule
+ */
+export const aculabClientEvent = new NativeEventEmitter(AculabClientModule);

@@ -1,7 +1,10 @@
-import { Platform, DeviceEventEmitter, PermissionsAndroid } from 'react-native';
+import { Platform, PermissionsAndroid } from 'react-native';
 import AcuMobCom from './AcuMobCom';
-import { incomingCallNotification, cancelIncomingCallNotification } from './AculabClientModule';
-// import { showAlert } from './helpers';
+import {
+  incomingCallNotification,
+  cancelIncomingCallNotification,
+  aculabClientEvent,
+} from './AculabClientModule';
 import RNCallKeep from 'react-native-callkeep';
 // @ts-ignore
 import type { AcuMobComState } from './types';
@@ -42,6 +45,8 @@ class AculabCall extends AcuMobCom {
     remoteVideoMuted: false,
   };
 
+  androidListenerA: any;
+  androidListenerB: any;
   /**
    * Run this function before using CallKeep
    * @param {string} appName - App name for iOS
@@ -105,24 +110,37 @@ class AculabCall extends AcuMobCom {
         this.setState({ callKeepCallActive: true });
         console.log('********** Android showIncomingCallUi ********');
       });
+      this.androidListenerA = aculabClientEvent.addListener('rejectedCallAndroid', (payload) => {
+        console.log('endCallAndroid', payload);
+        this.onEndCall();
+      });
+
+      this.androidListenerB = aculabClientEvent.addListener('answeredCallAndroid', (payload) => {
+        console.log('answerCallAndroid', payload);
+        this.answerCall();
+      });
     }
 
     RNCallKeep.addEventListener('endCall', this.onEndCall.bind(this));
-
-    // Android ONLY
-    DeviceEventEmitter.addListener('rejectedCallAndroid', (payload) => {
-      // End call action here
-      console.log('endCallAndroid REACT NATIVE REACT NATIVE', payload);
-      this.onEndCall();
-    });
-
-    // Android ONLY
-    DeviceEventEmitter.addListener('answeredCallAndroid', (payload) => {
-      console.log('answerCallAndroid REACT NATIVE REACT NATIVE', payload);
-      this.answerCall();
-    });
   }
 
+  /**
+   * Destroy all event listeners
+   */
+  destroyListeners(): void {
+    RNCallKeep.removeEventListener('didDisplayIncomingCall');
+    RNCallKeep.removeEventListener('answerCall');
+    RNCallKeep.removeEventListener('didPerformDTMFAction');
+    RNCallKeep.removeEventListener('didReceiveStartCallAction');
+    RNCallKeep.removeEventListener('didPerformSetMutedCallAction');
+    RNCallKeep.removeEventListener('didActivateAudioSession');
+    RNCallKeep.removeEventListener('endCall');
+    if (Platform.OS === 'android') {
+      RNCallKeep.removeEventListener('showIncomingCallUi');
+      this.androidListenerA.remove();
+      this.androidListenerB.remove();
+    }
+  }
   /**
    * End Call Stack
    * terminates call with webrtc
@@ -252,7 +270,9 @@ class AculabCall extends AcuMobCom {
       this.state.callOptions.receiveAudio = true;
       this.state.callOptions.receiveVideo = true;
       this.state.call.answer(this.state.callOptions);
-      RNCallKeep.answerIncomingCall(<string>this.state.callUuid);
+      if (Platform.OS === 'android') {
+        RNCallKeep.answerIncomingCall(<string>this.state.callUuid);
+      }
       console.log('CALL ANSWERED WITH CALLKEEP', this.state.callUuid);
     }
   }
@@ -289,7 +309,6 @@ class AculabCall extends AcuMobCom {
     if (this.state.incomingUI === false) {
       this.getCallUuid();
       if (Platform.OS === 'ios') {
-        console.log('********** THIS IS iOS DEVICE ********');
         RNCallKeep.displayIncomingCall(
           <string>this.state.callUuid,
           this.state.incomingCallClientId,
@@ -315,9 +334,8 @@ class AculabCall extends AcuMobCom {
       if (Platform.OS === 'android' && this.state.incomingUI) {
         cancelIncomingCallNotification();
       }
-      console.log('*****************');
     }
-    console.log('*********8 DISCONNEDCTED FIRED UP ********');
+    console.log('********* disconnectedInjection ********');
     this.setState({ callKeepCallActive: false });
     this.setState({ callAnswered: false });
     this.setState({ callType: 'none' });
