@@ -6,14 +6,15 @@ import {
   AculabCall,
   turnOnSpeaker,
   deleteSpaces,
-  incomingCallNotification,
-  cancelIncomingCallNotification,
+  // incomingCallNotification,
+  // cancelIncomingCallNotification,
 } from 'react-native-aculab-client';
 import { MenuButton } from './components/MenuButton';
 import { KeypadButton } from './components/KeypadButton';
 import { CallButton } from './components/CallButton';
 import { RoundButton } from './components/RoundButton';
 import { useNavigation } from '@react-navigation/native';
+import RNCallKeep from 'react-native-callkeep';
 // @ts-ignore
 
 const MainCallButtons = (props: any) => {
@@ -159,19 +160,21 @@ const CallOutComponent = (props: any) => {
             )
           }
         />
-        <MenuButton
+        {/* <MenuButton
           title={'test'}
           onPress={() =>
             incomingCallNotification(
-              'aculab_call_channel_id',
-              'aculab_channel_name',
-              'Incoming call notification description',
-              'Incoming call context',
+              'acu_incoming_call',
+              'Incoming call',
+              'channel used to display incoming call notification',
+              'incoming call name',
               1986
             )
           }
-        />
-        <MenuButton title={'test 2'} onPress={() => cancelIncomingCallNotification()} />
+        /> */}
+        {/* <MenuButton title={'test 2'} onPress={() => cancelIncomingCallNotification()} /> */}
+        <MenuButton title={'test 2'} onPress={() => RNCallKeep.endAllCalls()} />
+        {/* <MenuButton title={'test 2'} onPress={() => props.aculabCall.phoneAcc()} /> */}
       </View>
     </View>
   );
