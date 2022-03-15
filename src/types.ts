@@ -39,6 +39,7 @@ export interface AcuMobComState {
   callOptions: CallOptions;
   speakerOn: boolean;
   incomingCallClientId: string; // inbound call from client ID
+  timer?: number;
 
   // mute state
   outputAudio: boolean;
@@ -68,4 +69,11 @@ export interface WebRTCToken {
   cloudRegionId: string;
   cloudUsername: string;
   apiAccessKey: string;
+}
+
+export interface CallRecord {
+  name: string;
+  type: 'incoming' | 'outgoing' | 'missed';
+  duration: number | undefined; // in seconds
+  call: 'client' | 'service';
 }

@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 interface CallButtonProps {
   title: string;
   colour: string;
-  onPress: () => void;
+  onPress: ((event: any) => void) | undefined;
 }
 
 export const CallButton = ({ title, colour, onPress }: CallButtonProps) => {

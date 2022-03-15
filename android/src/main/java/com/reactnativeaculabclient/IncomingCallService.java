@@ -4,13 +4,13 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.telecom.ConnectionService;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -19,7 +19,7 @@ import androidx.core.text.HtmlCompat;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 
-public class IncomingCallService extends Service {
+public class IncomingCallService extends ConnectionService {
 
   public static final ReactApplicationContext reactContext = AculabClientModule.reactContext;
 
@@ -85,12 +85,6 @@ public class IncomingCallService extends Service {
   @Override
   public void onDestroy() {
     super.onDestroy();
-  }
-
-  @Nullable
-  @Override
-  public IBinder onBind(Intent intent) {
-    return null;
   }
 
   private void createNotificationChannel(String channelId, String channelName, String channelDescription) {

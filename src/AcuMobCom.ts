@@ -374,6 +374,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
         showAlert('', 'The Client/Service is Unreachable');
       }
     }
+    this.disconnectedInjection();
     this.setState({ call: null });
     this.setState({ incomingCallClientId: '' });
     this.setState({ localVideoMuted: false });
@@ -381,7 +382,6 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
     this.state.callOptions.constraints = { audio: false, video: false };
     this.state.callOptions.receiveAudio = false;
     this.state.callOptions.receiveVideo = false;
-    this.disconnectedInjection();
   }
 
   /**

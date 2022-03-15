@@ -2,20 +2,12 @@ import React from 'react';
 import { View, Text, TextInput, ScrollView, SafeAreaView, Image } from 'react-native';
 import { styles, COLOURS } from './styles';
 import { RTCView } from 'react-native-webrtc';
-import {
-  AculabCall,
-  turnOnSpeaker,
-  deleteSpaces,
-  // incomingCallNotification,
-  // cancelIncomingCallNotification,
-} from 'react-native-aculab-client';
+import { AculabCall, turnOnSpeaker, deleteSpaces } from 'react-native-aculab-client';
 import { MenuButton } from './components/MenuButton';
 import { KeypadButton } from './components/KeypadButton';
 import { CallButton } from './components/CallButton';
 import { RoundButton } from './components/RoundButton';
 import { useNavigation } from '@react-navigation/native';
-import RNCallKeep from 'react-native-callkeep';
-// @ts-ignore
 
 const MainCallButtons = (props: any) => {
   return (
@@ -160,21 +152,6 @@ const CallOutComponent = (props: any) => {
             )
           }
         />
-        {/* <MenuButton
-          title={'test'}
-          onPress={() =>
-            incomingCallNotification(
-              'acu_incoming_call',
-              'Incoming call',
-              'channel used to display incoming call notification',
-              'incoming call name',
-              1986
-            )
-          }
-        /> */}
-        {/* <MenuButton title={'test 2'} onPress={() => cancelIncomingCallNotification()} /> */}
-        <MenuButton title={'test 2'} onPress={() => RNCallKeep.endAllCalls()} />
-        {/* <MenuButton title={'test 2'} onPress={() => props.aculabCall.phoneAcc()} /> */}
       </View>
     </View>
   );
@@ -279,8 +256,6 @@ const CallDisplayHandler = (props: any) => {
 
 const CallButtonsHandler = (props: any) => {
   if (props.aculabCall.state.callState === 'incoming call') {
-    //incoming call
-    // return <ButtonsIncoming aculabCall={props.aculabCall} />;
     return <View />;
   } else if (props.aculabCall.state.callState !== 'idle') {
     if (props.aculabCall.state.callOptions.receiveVideo) {
