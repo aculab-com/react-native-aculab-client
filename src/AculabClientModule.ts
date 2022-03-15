@@ -69,5 +69,7 @@ export function cancelIncomingCallNotification(): void {
 
 /**
  * use for listeners from AculabClientModule
+ * Android ONLY
  */
-export const aculabClientEvent = new NativeEventEmitter(AculabClientModule);
+export const aculabClientEvent =
+  Platform.OS === 'android' ? new NativeEventEmitter(AculabClientModule) : undefined;

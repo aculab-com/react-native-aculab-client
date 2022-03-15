@@ -125,25 +125,23 @@ class AculabCall extends AcuMobCom {
     RNCallKeep.addEventListener('answerCall', () => this.answerCall());
 
     // RNCallKeep.addEventListener('didPerformDTMFAction', this.onPerformDTMFAction.bind(this));
-    RNCallKeep.addEventListener('didPerformDTMFAction', () => this.onPerformDTMFAction);
-
-    RNCallKeep.addEventListener(
-      'didReceiveStartCallAction',
-      this.onReceiveStartCallAction.bind(this)
+    RNCallKeep.addEventListener('didPerformDTMFAction', (digits) =>
+      this.onPerformDTMFAction(digits)
     );
 
-    RNCallKeep.addEventListener(
-      'didPerformSetMutedCallAction',
-      this.onPerformSetMutedCallAction.bind(this)
+    RNCallKeep.addEventListener('didReceiveStartCallAction', (callUUID) =>
+      this.onReceiveStartCallAction(callUUID)
+    );
+
+    RNCallKeep.addEventListener('didPerformSetMutedCallAction', (muted) =>
+      this.onPerformSetMutedCallAction(muted)
     );
 
     RNCallKeep.addEventListener('didActivateAudioSession', () => {
-      // you might want to do following things when receiving this event:
-      // - Start playing ringback if it is an outgoing call
       this.onActivateAudioSession();
     });
 
-    RNCallKeep.addEventListener('endCall', this.onEndCall.bind(this));
+    RNCallKeep.addEventListener('endCall', () => this.onEndCall());
 
     // Android ONLY
     if (Platform.OS === 'android') {
@@ -151,11 +149,14 @@ class AculabCall extends AcuMobCom {
         this.displayCustomIncomingUI(handle, callUUID, name);
         this.setState({ callKeepCallActive: true });
       });
+
+      // @ts-ignore: aculabClientEvent is not undefined for android
       this.androidListenerA = aculabClientEvent.addListener('rejectedCallAndroid', (payload) => {
         console.log('endCallAndroid', payload);
         this.onEndCall();
       });
 
+      // @ts-ignore: aculabClientEvent is not undefined for android
       this.androidListenerB = aculabClientEvent.addListener('answeredCallAndroid', (payload) => {
         console.log('answerCallAndroid', payload);
         this.answerCall();
@@ -181,8 +182,13 @@ class AculabCall extends AcuMobCom {
     }
   }
 
+  /**
+   * Overwrite this function to insert your own logic\
+   * e.g., play a ringtone for outbound call
+   */
   onActivateAudioSession() {
-    console.log('0000000000 didActivateAudioSession 0000000000');
+    // you might want to do start playing ringback if it is an outgoing call
+    console.log('$$$ onActivateAudioSession $$$');
   }
 
   /**
@@ -190,6 +196,9 @@ class AculabCall extends AcuMobCom {
    * terminates call with webrtc
    */
   onEndCall() {
+    console.log('$$$ onEndCall $$$');
+    console.log('$$$ onEndCall $$$ answered:', this.state.callAnswered);
+    console.log('$$$ onEndCall $$$ callState:', this.state.callState);
     if (this.state.incomingUI) {
       this.reject();
     } else if (this.state.callAnswered || this.state.callState === 'ringing') {
@@ -201,7 +210,7 @@ class AculabCall extends AcuMobCom {
    * Called when Mute is pressed in CallKeep UI
    */
   onPerformSetMutedCallAction({ muted }: any) {
-    console.log('$$$ ON MUTE CALL ACTION $$$');
+    console.log('$$$ onPerformSetMutedCallAction $$$ muted:', muted);
     this.newMute(false, muted);
   }
 
@@ -218,7 +227,7 @@ class AculabCall extends AcuMobCom {
    * Called when CallKeep receives start call action
    */
   onReceiveStartCallAction({ callUUID }: any) {
-    console.log('$$$ START CALL ACTION RECEIVED $$$', callUUID);
+    console.log('$$$ onReceiveStartCallAction $$$', callUUID);
     this.setState({ callKeepCallActive: true });
     // fix UUID bug in CallKeep (Android bug only)
     // CallKeep uses it's own UUID for outgoing connection, here we retrieve it and use it to end the call
@@ -231,7 +240,7 @@ class AculabCall extends AcuMobCom {
    * Called when CallKeep displays incoming call UI
    */
   onIncomingCallDisplayed() {
-    console.log('$$$ INCOMING CALL DISPLAYED $$$');
+    console.log('$$$ onIncomingCallDisplayed $$$');
     this.setState({ incomingUI: true });
     this.setState({ callKeepCallActive: true });
   }
@@ -241,6 +250,7 @@ class AculabCall extends AcuMobCom {
    * @param {number | string} param0 DTMF number to send
    */
   onPerformDTMFAction({ digits }: any) {
+    console.log('$$$ onPerformDTMFAction $$$', digits);
     this.sendDtmf(digits);
     RNCallKeep.removeEventListener('didPerformDTMFAction');
     RNCallKeep.addEventListener('didPerformDTMFAction', this.onPerformDTMFAction);
@@ -250,6 +260,7 @@ class AculabCall extends AcuMobCom {
    * Answer incoming call and set states
    */
   answerCall() {
+    console.log('$$$ answerCall $$$');
     this.setState({ callType: 'client' });
     if (!this.state.callAnswered) {
       this.answer();
@@ -336,6 +347,7 @@ class AculabCall extends AcuMobCom {
    * @param obj - webrtc object from aculab-webrtc
    */
   onIncoming(obj: any): void {
+    console.log('@@@ onIncoming @@@ incomingUI:', this.state.incomingUI);
     this.setState({ incomingCallClientId: obj.from });
     this.setState({ call: obj.call });
     this.setupCbCallIn(obj);
@@ -416,10 +428,10 @@ class AculabCall extends AcuMobCom {
       if (Platform.OS === 'android' && this.state.incomingUI) {
         RNCallKeep.rejectCall(<string>this.state.callUuid);
         cancelIncomingCallNotification();
-        this.setState({ incomingUI: false });
       } else {
         this.endCallKeepCall(<string>this.state.callUuid); //TEST
       }
+      this.setState({ incomingUI: false });
       this.createLastCallObject();
     }
     this.setState({ callKeepCallActive: false });
