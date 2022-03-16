@@ -1,13 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import type { ButtonProps } from '../types';
 
-interface CallButtonProps {
-  title: string;
-  colour: string;
-  onPress: ((event: any) => void) | undefined;
-}
-
-export const CallButton = ({ title, colour, onPress }: CallButtonProps) => {
+export const CallButton = ({ title, colour, onPress }: ButtonProps) => {
   return (
     <View>
       <TouchableOpacity

@@ -1,12 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import type { ButtonProps } from '../types';
 
-interface MenuButtonProps {
-  title: string;
-  onPress: () => void;
-}
-
-export const MenuButton = ({ title, onPress }: MenuButtonProps) => {
+export const MenuButton = ({ title, onPress }: ButtonProps) => {
   return (
     <View>
       <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>

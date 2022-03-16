@@ -94,6 +94,7 @@ class AculabCall extends AcuMobCom {
       RNCallKeep.setup({
         ios: {
           appName: appName,
+          supportsVideo: true,
         },
         android: {
           alertTitle: 'Permissions required',
@@ -109,10 +110,7 @@ class AculabCall extends AcuMobCom {
           //   notificationIcon: 'Path to the resource icon of the notification',
           // },
         },
-      }).then((accepted) => {
-        console.log('CallKeep accepted:', accepted);
       });
-      // RNCallKeep.setAvailable(true);
     } catch (err: any) {
       console.error('initializeCallKeep error:', err.message);
     }
@@ -165,7 +163,7 @@ class AculabCall extends AcuMobCom {
   }
 
   /**
-   * Destroy all event listeners
+   * Remove all event listeners
    */
   destroyListeners(): void {
     RNCallKeep.removeEventListener('didDisplayIncomingCall');
@@ -197,8 +195,6 @@ class AculabCall extends AcuMobCom {
    */
   onEndCall() {
     console.log('$$$ onEndCall $$$');
-    console.log('$$$ onEndCall $$$ answered:', this.state.callAnswered);
-    console.log('$$$ onEndCall $$$ callState:', this.state.callState);
     if (this.state.incomingUI) {
       this.reject();
     } else if (this.state.callAnswered || this.state.callState === 'ringing') {
@@ -299,8 +295,10 @@ class AculabCall extends AcuMobCom {
   endCallKeepCall(endUuid: string, reason?: number) {
     if (reason) {
       RNCallKeep.reportEndCallWithUUID(endUuid, reason);
+      console.log('endCallKeepCall uuid: ' + endUuid, 'reason: ' + reason);
     } else {
       RNCallKeep.endCall(endUuid);
+      console.log('endCallKeepCall', endUuid);
     }
   }
 
@@ -336,7 +334,8 @@ class AculabCall extends AcuMobCom {
    * Called when webrtc connection state is 'connected'
    */
   connectedInjection() {
-    RNCallKeep.setCurrentCallActive(<string>this.state.callUuid); //TODO this does not work, investigate
+    RNCallKeep.setCurrentCallActive(<string>this.state.callUuid);
+    RNCallKeep.reportConnectedOutgoingCallWithUUID(<string>this.state.callUuid);
     this.setState({ connectingCall: false });
     this.setState({ callAnswered: true });
     this.startCounter();
@@ -429,7 +428,7 @@ class AculabCall extends AcuMobCom {
         RNCallKeep.rejectCall(<string>this.state.callUuid);
         cancelIncomingCallNotification();
       } else {
-        this.endCallKeepCall(<string>this.state.callUuid); //TEST
+        this.endCallKeepCall(<string>this.state.callUuid);
       }
       this.setState({ incomingUI: false });
       this.createLastCallObject();

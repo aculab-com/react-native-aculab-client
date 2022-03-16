@@ -1,12 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import type { ButtonProps } from '../types';
 
-interface KeypadButtonProps {
-  title: string;
-  onPress: () => void;
-}
-
-export const KeypadButton = ({ title, onPress }: KeypadButtonProps) => {
+export const KeypadButton = ({ title, onPress }: ButtonProps) => {
   return (
     <View>
       <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>

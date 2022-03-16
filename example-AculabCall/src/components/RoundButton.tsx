@@ -1,11 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-interface RoundButtonProps {
-  iconName: string;
-  onPress: () => void;
-}
+import type { RoundButtonProps } from '../types';
 
 export const RoundButton = ({ iconName, onPress }: RoundButtonProps) => {
   return (
