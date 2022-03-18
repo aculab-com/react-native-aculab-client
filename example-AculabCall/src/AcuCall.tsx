@@ -15,7 +15,7 @@ const MainCallButtons = (props: any) => {
       <CallButton
         title={'Hang up'}
         colour={COLOURS.RED}
-        onPress={() => props.aculabCall.onEndCall()}
+        onPress={() => props.aculabCall.endCall()}
       />
       <CallButton
         title={'Speaker'}

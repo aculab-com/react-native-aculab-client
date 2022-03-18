@@ -44,8 +44,6 @@
         </intent-filter>
       </service>
 
-      <activity android:name="com.incomingcall.UnlockScreenActivity" />
-
       <activity android:name="com.reactnativeaculabclient.IncomingCallActivity" />
       <service android:name="com.reactnativeaculabclient.IncomingCallService"
         android:foregroundServiceType="phoneCall"

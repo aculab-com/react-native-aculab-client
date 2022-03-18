@@ -139,7 +139,7 @@ class AculabCall extends AcuMobCom {
       this.onActivateAudioSession();
     });
 
-    RNCallKeep.addEventListener('endCall', () => this.onEndCall());
+    RNCallKeep.addEventListener('endCall', () => this.endCall());
 
     // Android ONLY
     if (Platform.OS === 'android') {
@@ -151,7 +151,7 @@ class AculabCall extends AcuMobCom {
       // @ts-ignore: aculabClientEvent is not undefined for android
       this.androidListenerA = aculabClientEvent.addListener('rejectedCallAndroid', (payload) => {
         console.log('endCallAndroid', payload);
-        this.onEndCall();
+        this.endCall();
       });
 
       // @ts-ignore: aculabClientEvent is not undefined for android
@@ -193,8 +193,8 @@ class AculabCall extends AcuMobCom {
    * End Call Stack
    * terminates call with webrtc
    */
-  onEndCall() {
-    console.log('$$$ onEndCall $$$');
+  endCall() {
+    console.log('$$$ endCall $$$');
     if (this.state.incomingUI) {
       this.reject();
     } else if (this.state.callAnswered || this.state.callState === 'ringing') {
@@ -330,12 +330,13 @@ class AculabCall extends AcuMobCom {
   }
 
   /**
-   * Injection into connected AcuMobCom function\
-   * Called when webrtc connection state is 'connected'
+   * Called when a call is connected
+   * @param {any} obj AcuMobCom object or Incoming call object
    */
-  connectedInjection() {
+  connected(obj: any): void {
+    super.connected(obj);
     RNCallKeep.setCurrentCallActive(<string>this.state.callUuid);
-    RNCallKeep.reportConnectedOutgoingCallWithUUID(<string>this.state.callUuid);
+    RNCallKeep.reportConnectedOutgoingCallWithUUID(<string>this.state.callUuid); // for ios outbound call correct call logging
     this.setState({ connectingCall: false });
     this.setState({ callAnswered: true });
     this.startCounter();
@@ -347,9 +348,7 @@ class AculabCall extends AcuMobCom {
    */
   onIncoming(obj: any): void {
     console.log('@@@ onIncoming @@@ incomingUI:', this.state.incomingUI);
-    this.setState({ incomingCallClientId: obj.from });
-    this.setState({ call: obj.call });
-    this.setupCbCallIn(obj);
+    super.onIncoming(obj);
     if (this.state.incomingUI === false) {
       this.getCallUuid();
       if (Platform.OS === 'ios') {
@@ -368,7 +367,6 @@ class AculabCall extends AcuMobCom {
         );
       }
     }
-    this.setState({ callState: 'incoming call' });
   }
 
   /**
@@ -422,7 +420,7 @@ class AculabCall extends AcuMobCom {
   }
 
   // Overwritten function
-  disconnectedInjection(): void {
+  callDisconnected(obj: any): void {
     if (this.state.callKeepCallActive === true) {
       if (Platform.OS === 'android' && this.state.incomingUI) {
         RNCallKeep.rejectCall(<string>this.state.callUuid);
@@ -439,6 +437,7 @@ class AculabCall extends AcuMobCom {
     setTimeout(() => {
       this.setState({ callUuid: '' });
     }, 100);
+    super.callDisconnected(obj);
   }
 
   /**

@@ -362,7 +362,6 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
   /**
    * Called when incoming/outgoing call is disconnected\
    * set states\
-   * has function disconnectedInjection - overwrite this function to inject your logic into callDisconnected function
    * @param {any} obj AcuMobCom object or Incoming call object
    */
   callDisconnected(obj: any) {
@@ -374,7 +373,6 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
         showAlert('', 'The Client/Service is Unreachable');
       }
     }
-    this.disconnectedInjection();
     this.setState({ call: null });
     this.setState({ incomingCallClientId: '' });
     this.setState({ localVideoMuted: false });
@@ -382,22 +380,6 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
     this.state.callOptions.constraints = { audio: false, video: false };
     this.state.callOptions.receiveAudio = false;
     this.state.callOptions.receiveVideo = false;
-  }
-
-  /**
-   * Called within callDisconnect function\
-   * Overwrite this function to inject logic into callDisconnected function
-   */
-  disconnectedInjection() {
-    // Overwrite this function to inject logic into callDisconnected
-  }
-
-  /**
-   * Called within connected function\
-   * Overwrite this function to inject logic into connected function
-   */
-  connectedInjection() {
-    // Overwrite this function to inject logic into connected
   }
 
   // onMedia CB
@@ -430,18 +412,17 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
 
   /**
    * Called when a call is connected
-   * @param {any} obj AcuMobCom object or Incoming call object
+   * @param {any} obj webrtc object from aculab-webrtc
    */
   connected(obj: any) {
     obj.call.call_state = 'Connected';
     this.setState({ localStream: this.getLocalStream() });
     this.setState({ remoteStream: obj.call._remote_stream[0] });
-    this.connectedInjection();
   }
 
   /**
    * Called when error in a call occurs
-   * @param {any} obj AcuMobCom object or Incoming call object
+   * @param {any} obj webrtc object from aculab-webrtc
    */
   handleError(obj: any) {
     console.log('***** handle error OBJ: ', obj.call);
@@ -450,7 +431,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
 
   /**
    * Called when an incoming call occurs
-   * @param {any} obj AcuMobCom object or Incoming call object
+   * @param {any} obj webrtc object from aculab-webrtc
    */
   onIncoming(obj: any): void {
     this.setState({ incomingCallClientId: obj.from });

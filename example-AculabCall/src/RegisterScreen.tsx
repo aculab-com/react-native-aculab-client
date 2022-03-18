@@ -26,7 +26,7 @@ export const RegisterScreen = () => {
     try {
       let token = await getToken({
         registerClientId: registerClientId,
-        tokenLifeTime: 6000,
+        tokenLifeTime: 60000,
         enableIncomingCall: true,
         callClientRange: '*',
         cloudRegionId: cloudRegionId,
