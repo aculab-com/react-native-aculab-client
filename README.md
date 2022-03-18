@@ -2,13 +2,13 @@
 
 This package implements [Aculab](https://www.aculab.com/) webRTC services in the React Native project
 
----
-
 ![npm](https://img.shields.io/npm/dw/react-native-aculab-client)
 [![npm_package](https://img.shields.io/npm/v/react-native-aculab-client?color=green)](https://www.npmjs.com/package/react-native-aculab-client)
 [![license](https://img.shields.io/npm/l/react-native-aculab-client)](https://github.com/aculab-com/react-native-aculab-client/blob/main/LICENSE)
 
-## AcuMobCom Component
+---
+
+## 1. AcuMobCom Component
 
 AcuMobCom is a react native component allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls.
 
@@ -24,7 +24,9 @@ Please visit the [Demo App](https://github.com/aculab-com/react-native-aculab-cl
 
 AcuMobCom [Example (Demo) app README](https://github.com/aculab-com/react-native-aculab-client/blob/main/example-AcuMobCom/AcuMobCom-Example-README.md)
 
-## AculabCall Component
+---
+
+## 2. AculabCall Component
 
 AculabCall is a react native component allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls implementing iOS Call Kit and Android ConnectionService.
 
@@ -40,6 +42,8 @@ AculabCall [README](https://github.com/aculab-com/react-native-aculab-client/blo
 Please visit the [Demo App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AculabCall) to see it being used practice.
 
 AculabCall [Example (Demo) app README](https://github.com/aculab-com/react-native-aculab-client/blob/main/example-AculabCall/AculabCall-Example-README.md)
+
+---
 
 ## License
 
