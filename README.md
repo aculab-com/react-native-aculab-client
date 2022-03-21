@@ -37,11 +37,11 @@ AculabCall is a react native component allowing iOS and Android platforms to use
 [![react-native-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
 [![react-native-callkeep](https://img.shields.io/npm/dependency-version/react-native-aculab-client/dev/react-native-callkeep)](https://www.npmjs.com/package/react-native-callkeep)
 
-AculabCall [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AculabCall-README.md)
+AculabCall [README](https://github.com/aculab-com/react-native-aculab-client/blob/callkeepdev/src/AculabCall-README.md)
 
-Please visit the [Demo App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AculabCall) to see it being used practice.
+Please visit the [Demo App](https://github.com/aculab-com/react-native-aculab-client/tree/callkeepdev/example-AculabCall) to see it being used practice.
 
-AculabCall [Example (Demo) app README](https://github.com/aculab-com/react-native-aculab-client/blob/main/example-AculabCall/AculabCall-Example-README.md)
+AculabCall [Example (Demo) app README](https://github.com/aculab-com/react-native-aculab-client/blob/callkeepdev/example-AculabCall/AculabCall-Example-README.md)
 
 ---
 

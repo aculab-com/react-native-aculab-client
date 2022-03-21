@@ -1,6 +1,6 @@
 # AcuMobCom-Example (Demo)
 
-This Example demonstrates use of the Aculab package AcuMobCom from [react-native-aculab-client](https://www.npmjs.com/package/react-native-aculab-client). It allows you to make calls to Aculab cloud services from iOS and Android platforms and to send dtmf. It Also supports peer-to-peer video/audio calls.
+This Example demonstrates use of the AcuMobCom Component from [react-native-aculab-client](https://www.npmjs.com/package/react-native-aculab-client) package. It allows you to make calls to Aculab cloud services from iOS and Android platforms and to send dtmf. It Also supports peer-to-peer video/audio calls.
 
 ---
 
