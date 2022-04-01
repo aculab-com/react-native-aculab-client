@@ -14,7 +14,9 @@ import { deleteSpaces, showAlert } from './helpers';
  */
 export const getToken = async (webRTCToken: WebRTCToken): Promise<string> => {
   let url =
-    'https://ws.aculabcloud.net/webrtc_generate_token?client_id=' +
+    'https://ws-' +
+    webRTCToken.cloudRegionId +
+    '.aculabcloud.net/webrtc_generate_token?client_id=' +
     webRTCToken.registerClientId +
     '&ttl=' +
     webRTCToken.tokenLifeTime +
@@ -49,11 +51,11 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
     remoteStream: null,
     localStream: null,
     dtmfEnabled: false,
-    serviceName: 'webrtcdemo', // service name to call
+    serviceName: '', // service name to call
     webRTCToken: '',
     client: null,
     call: null,
-    callClientId: 'marmar', // client ID to call
+    callClientId: '', // client ID to call
     callState: 'idle', // human readable call status
     callOptions: {
       constraints: { audio: false, video: false },
@@ -417,7 +419,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
   connected(obj: any) {
     obj.call.call_state = 'Connected';
     this.setState({ localStream: this.getLocalStream() });
-    this.setState({ remoteStream: obj.call._remote_stream[0] });
+    this.setState({ remoteStream: obj.call._remote_stream });
   }
 
   /**
