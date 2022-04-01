@@ -104,11 +104,11 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
           if (this.state.localStream != null) {
             this.setState({ localStream: null });
           }
-          console.log('Registration complete');
+          console.log('[ AcuMobCom ]', 'Registration complete');
         }
       );
     } else {
-      console.log('the state must be idle to register');
+      console.log('[ AcuMobCom ]', 'the state must be idle to register');
     }
   }
 
@@ -128,9 +128,12 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
   callCheck(): boolean {
     var passed: boolean = false;
     if (this.state.client === null) {
-      console.log('Register the client first');
+      console.log('[ AcuMobCom ]', 'Register the client first');
     } else if (this.state.call) {
-      console.log('One call is in progress already (only one call at a time is permitted)');
+      console.log(
+        '[ AcuMobCom ]',
+        'One call is in progress already (only one call at a time is permitted)'
+      );
     } else {
       passed = true;
     }
@@ -144,7 +147,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
    */
   callClient(): void {
     if (this.state.callClientId.length === 0) {
-      console.log('enter client ID to call');
+      console.log('[ AcuMobCom ]', 'enter client ID to call');
       return;
     } else if (this.callCheck()) {
       this.setState({ callClientId: deleteSpaces(this.state.callClientId) }, () => {
@@ -168,7 +171,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
    */
   callService(): void {
     if (this.state.serviceName.length === 0) {
-      console.log('enter service name to call');
+      console.log('[ AcuMobCom ]', 'enter service name to call');
       return;
     } else if (this.callCheck()) {
       this.setState({ serviceName: deleteSpaces(this.state.serviceName) }, () => {
@@ -192,9 +195,9 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
    */
   swapCam(): void {
     if (this.state.remoteStream === null) {
-      console.log('swap camera allowed only when calling another client');
+      console.log('[ AcuMobCom ]', 'swap camera allowed only when calling another client');
     } else if (this.state.localVideoMuted) {
-      console.log('swap camera allowed only when local video is streaming');
+      console.log('[ AcuMobCom ]', 'swap camera allowed only when local video is streaming');
     } else {
       var stream = this.getLocalStream(); //NEVER MORE THAN ONE STREAM IN THE ARRAY
       //Assume first stream and first video track for now
@@ -427,7 +430,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
    * @param {any} obj webrtc object from aculab-webrtc
    */
   handleError(obj: any) {
-    console.log('***** handle error OBJ: ', obj.call);
+    console.log('[ AcuMobCom ]', 'handle error OBJ: ', obj.call);
     this.stopCall();
   }
 
