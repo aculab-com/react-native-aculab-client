@@ -6,18 +6,19 @@ import { styles, COLOURS } from './styles';
 import type { AuthStackParam } from './types';
 import { MenuButton } from './components/MenuButton';
 import { getToken, deleteSpaces, showAlert } from 'react-native-aculab-client';
+import { DEV_CONSTANTS } from '../../devConstants';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type Props = NativeStackNavigationProp<AuthStackParam, 'AcuMobCom'>;
 
 export const RegisterScreen = () => {
-  const [webRTCAccessKey, setWebRTCAccessKey] = useState('');
-  const [apiAccessKey, setApiAccessKey] = useState('');
-  const [cloudRegionId, setCloudRegionId] = useState('');
-  const [cloudUsername, setCloudUsername] = useState('');
-  const [logLevel, setLogLevel] = useState('');
-  const [registerClientId, setRegisterClientId] = useState('');
+  const [webRTCAccessKey, setWebRTCAccessKey] = useState(DEV_CONSTANTS.webRTCAccessKey);
+  const [apiAccessKey, setApiAccessKey] = useState(DEV_CONSTANTS.apiAccessKey);
+  const [cloudRegionId, setCloudRegionId] = useState(DEV_CONSTANTS.cloudRegionId);
+  const [cloudUsername, setCloudUsername] = useState(DEV_CONSTANTS.cloudUsername);
+  const [logLevel, setLogLevel] = useState(DEV_CONSTANTS.logLevel);
+  const [registerClientId, setRegisterClientId] = useState(DEV_CONSTANTS.registerClientId);
   const [webRTCToken, setWebRTCToken] = useState('None');
   const navigation = useNavigation<Props>();
 
