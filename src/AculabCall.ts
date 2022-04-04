@@ -214,14 +214,14 @@ class AculabCall extends AcuMobCom {
    */
   onPerformSetMutedCallAction({ muted }: any) {
     console.log('[ AculabCall ]', 'onPerformSetMutedCallAction muted:', muted);
-    this.newMute(false, muted);
+    this.callKeepMute(false, muted);
   }
 
   /**
-   * this function is for testing purposes only
+   * CallKeep mute audio from native UI helper function
    */
-  newMute(cam: boolean, mic: boolean) {
-    if (this.state.call !== null && this.state.call !== undefined) {
+  callKeepMute(cam: boolean, mic: boolean) {
+    if (this.state.call !== null || this.state.call !== undefined) {
       this.state.call.mute(mic, mic, cam, cam);
     }
   }
