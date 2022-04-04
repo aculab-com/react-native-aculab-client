@@ -56,7 +56,7 @@ public void peerConnectionSendDTMF(String tone, int duration, int interToneGap, 
 
 ### Add permissions
 
-#### Android
+#### Android < API 30
 
 yourProject/android/app/src/main/AndroidManifest.xml
 
@@ -64,24 +64,21 @@ add the following permissions
 
 ``` xml
 <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS"/>
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE"/>
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<uses-permission android:name="android.permission.CALL_PHONE" />
+<uses-permission android:name="android.permission.MANAGE_OWN_CALLS"/>
 
 <application>
     // ...
     <service android:name="io.wazo.callkeep.VoiceConnectionService"
         android:label="Wazo"
         android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
-        // Use this to target android >= 11
-        android:foregroundServiceType="camera|microphone"
-        // For android < 11
         android:foregroundServiceType="phoneCall"
     >
         
@@ -97,6 +94,48 @@ add the following permissions
     // ....
 </application>
 ```
+
+#### Android >= API 30
+
+yourProject/android/app/src/main/AndroidManifest.xml
+
+add the following permissions
+
+``` xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE"/>
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<uses-permission android:name="android.permission.CALL_PHONE" />
+<uses-permission android:name="android.permission.MANAGE_OWN_CALLS"/>
+<uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
+
+<application>
+    // ...
+    <service android:name="io.wazo.callkeep.VoiceConnectionService"
+        android:label="Wazo"
+        android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
+        android:foregroundServiceType="camera|microphone"
+    >
+        
+        <intent-filter>
+            <action android:name="android.telecom.ConnectionService" />
+        </intent-filter>
+    </service>
+
+    <activity android:name="com.reactnativeaculabclient.IncomingCallActivity" />
+    <service android:name="com.reactnativeaculabclient.IncomingCallService"
+      android:foregroundServiceType="camera|microphone"
+    />
+    // ....
+</application>
+```
+
+Make sure that for **Android >= API 30 android/build.gradle buildscript has compileSdkVersion = 30**
 
 #### iOS
 

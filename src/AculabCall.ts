@@ -5,7 +5,7 @@ import {
   cancelIncomingCallNotification,
   aculabClientEvent,
 } from './AculabClientModule';
-import RNCallKeep from 'react-native-callkeep';
+import RNCallKeep, { IOptions } from 'react-native-callkeep';
 import type { AcuMobComState, CallRecord } from './types';
 import uuid from 'react-native-uuid';
 
@@ -90,26 +90,33 @@ class AculabCall extends AcuMobCom {
    * @param {string} appName - App name for iOS
    */
   async initializeCallKeep(appName: string) {
+    const iosSetup = {
+      appName: appName,
+      supportsVideo: true,
+    };
+
+    let androidSetup: IOptions['android'] = {
+      alertTitle: 'Permissions required',
+      alertDescription: 'This application needs to access your phone accounts',
+      cancelButton: 'Cancel',
+      okButton: 'ok',
+      additionalPermissions: [PermissionsAndroid.PERMISSIONS.READ_CONTACTS],
+      selfManaged: true,
+    };
+
+    if (Platform.OS === 'android' && Platform.Version >= 30) {
+      androidSetup.foregroundService = {
+        channelId: 'callkeep_channel',
+        channelName: 'Foreground service',
+        notificationTitle: 'My app is running on background',
+        notificationIcon: 'Path to the resource icon of the notification',
+      };
+    }
+
     try {
       RNCallKeep.setup({
-        ios: {
-          appName: appName,
-          supportsVideo: true,
-        },
-        android: {
-          alertTitle: 'Permissions required',
-          alertDescription: 'This application needs to access your phone accounts',
-          cancelButton: 'Cancel',
-          okButton: 'ok',
-          additionalPermissions: [PermissionsAndroid.PERMISSIONS.READ_CONTACTS],
-          selfManaged: true,
-          // foregroundService: {
-          //   channelId: 'callkeep_channel',
-          //   channelName: 'Foreground service for my app',
-          //   notificationTitle: 'My app is running on background',
-          //   notificationIcon: 'Path to the resource icon of the notification',
-          // },
-        },
+        ios: iosSetup,
+        android: androidSetup,
       });
     } catch (err: any) {
       console.error('[ AculabCall ]', 'initializeCallKeep error:', err.message);

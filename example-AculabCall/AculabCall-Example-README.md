@@ -4,6 +4,8 @@ This Example demonstrates use of the AculabCall Component from [react-native-acu
 
 ---
 
+**This demo is set for Android OS < 11 (API 30) to run this demo on Android 11 and higher, please see AculabCall-README.md (section Add Permissions) and change AndroidManifest.xml and android/build.gradle accordingly.**
+
 ## Installation
 
 ### 1. Clone the repository

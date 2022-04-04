@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.telecom.ConnectionService;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -22,6 +23,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 public class IncomingCallService extends ConnectionService {
 
   public static final ReactApplicationContext reactContext = AculabClientModule.reactContext;
+  private static final String TAG = "[ReactNativeAculabClient]";
 
   @Override
   public void onCreate() {
@@ -75,6 +77,8 @@ public class IncomingCallService extends ConnectionService {
       .setFullScreenIntent(fullScreenPendingIntent, true)
       .setPriority(NotificationCompat.PRIORITY_HIGH)
       .setCategory(NotificationCompat.CATEGORY_CALL);
+
+    Log.d(TAG, "[IncomingCallService] Starting foreground service");
 
     Notification incomingCallNotification = notificationBuilder.build();
     startForeground(notificationId, incomingCallNotification);
