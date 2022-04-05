@@ -20,15 +20,15 @@ AcuMobCom is a react native component allowing iOS and Android platforms to use 
 
 AcuMobCom [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AcuMobCom-README.md)
 
-Please visit the [Example App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AcuMobCom) to see it being used practice.
-
-AcuMobCom [Example app README](https://github.com/aculab-com/react-native-aculab-client/blob/main/example-AcuMobCom/AcuMobCom-Example-README.md)
+The [Example App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AcuMobCom) shows it being used practice ([README](https://github.com/aculab-com/react-native-aculab-client/blob/main/example-AcuMobCom/AcuMobCom-Example-README.md))
 
 ---
 
 ## 2. AculabCall Component
 
-AculabCall is a react native component allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls implementing iOS Call Kit and Android ConnectionService.
+AculabCall is a react native component extending AcuMobCom component. It allowing iOS and Android platforms to use Aculab Services and peer-to-peer video calls implementing iOS Call Kit and Android ConnectionService.
+iOS logs incoming and outgoing calls and incoming call uses ios native UI
+Android incoming call is displayed as notification + fullscreen intent, it also provides function to get information about last call for call log purposes.
 
 ### AculabCall Dependencies
 
@@ -39,9 +39,7 @@ AculabCall is a react native component allowing iOS and Android platforms to use
 
 AculabCall [README](https://github.com/aculab-com/react-native-aculab-client/blob/callkeepdev/src/AculabCall-README.md)
 
-Please visit the [Example App](https://github.com/aculab-com/react-native-aculab-client/tree/callkeepdev/example-AculabCall) to see it being used practice.
-
-AculabCall [Example app README](https://github.com/aculab-com/react-native-aculab-client/blob/callkeepdev/example-AculabCall/AculabCall-Example-README.md)
+The [Example App](https://github.com/aculab-com/react-native-aculab-client/tree/callkeepdev/example-AculabCall) shows it being used practice ([README](https://github.com/aculab-com/react-native-aculab-client/blob/callkeepdev/example-AculabCall/AculabCall-Example-README.md)).
 
 ---
 
