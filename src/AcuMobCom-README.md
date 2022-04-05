@@ -16,7 +16,7 @@ Dependencies
 
 This package implements Aculab webRTC services in the React Native project. The main part of the package is component class AcuMobCom. You can write a custom class that extends this component and uses its state variables and methods.
 
-Please visit the [Demo App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AcuMobCom) to see it being used practice.
+Please visit the [Example App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AcuMobCom) to see it being used practice.
 
 ## Installation
 
@@ -90,7 +90,7 @@ yourProject/android/app/gradle/build.gradle
 
 ---
 
-## Usage - [Demo App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AcuMobCom)
+## Usage - [Example App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AcuMobCom)
 
 ### Use the package as a react native class component
 

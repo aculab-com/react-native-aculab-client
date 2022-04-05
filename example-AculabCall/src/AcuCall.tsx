@@ -304,7 +304,7 @@ class AcuCall extends AculabCall {
     return (
       <View style={styles.row}>
         <View style={styles.callHead}>
-          <Text style={styles.basicText}>Aculab - Call Demo</Text>
+          <Text style={styles.basicText}>Aculab - AculabCall Example</Text>
           {this.state.client !== null ? (
             <View>
               <Text style={styles.basicText}>Registered as {this.props.registerClientId}</Text>

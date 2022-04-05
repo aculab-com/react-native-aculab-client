@@ -300,7 +300,7 @@ class AcuMob extends AcuMobCom {
     return (
       <View style={styles.row}>
         <View style={styles.callHead}>
-          <Text style={styles.basicText}>Aculab - AcuMobCom Demo</Text>
+          <Text style={styles.basicText}>Aculab - AcuMobCom Example</Text>
           {this.state.client !== null ? (
             <View>
               <Text style={styles.basicText}>Registered as {this.props.registerClientId}</Text>

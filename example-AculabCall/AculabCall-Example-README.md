@@ -1,10 +1,10 @@
-# AculabCall-Example (Demo)
+# AculabCall-Example
 
 This Example demonstrates use of the AculabCall Component from [react-native-aculab-client](https://www.npmjs.com/package/react-native-aculab-client) package. It allows you to make calls to Aculab cloud services from iOS and Android platforms and to send dtmf. It Also supports peer-to-peer video/audio calls.
 
 ---
 
-**This demo is set for Android OS < 11 (API 30) to run this demo on Android 11 and higher, please see AculabCall-README.md (section Add Permissions) and change AndroidManifest.xml and android/build.gradle accordingly.**
+**This example app is set for Android OS < 11 (API 30) to run this example app on Android 11 and higher, please see AculabCall-README.md (section Add Permissions) and change AndroidManifest.xml and android/build.gradle accordingly.**
 
 ## Installation
 
@@ -54,7 +54,7 @@ public void peerConnectionSendDTMF(String tone, int duration, int interToneGap, 
 ### 5. Edit parameters given to AcuMob in file RegisterScreen.tsx to your own cloud
 
 You can change default registration credentials in the RegisterScreen states.
-This step is not required but it makes testing easier, however you can always edit these props in the registration screen via UI in the Example (Demo) app.
+This step is not required but it makes testing easier, however you can always edit these props in the registration screen via UI in the Example app.
 
 [AculabCall props](https://github.com/aculab-com/react-native-aculab-client/blob/callkeepdev/example-AculabCall/src/RegisterScreen.tsx#L15)
 
@@ -74,4 +74,4 @@ Now you're good to go.
 
 ---
 
-#### Note that and apiAccessKey should not ever be displayed and should be treated as sensitive data. In the Demo app they are displayed only to assist developer testing. You should not display this sensitive information in your application
+#### Note that and apiAccessKey should not ever be displayed and should be treated as sensitive data. In the Example app they are displayed only to assist developer testing. You should not display this sensitive information in your application

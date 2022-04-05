@@ -20,9 +20,9 @@ AcuMobCom is a react native component allowing iOS and Android platforms to use 
 
 AcuMobCom [README](https://github.com/aculab-com/react-native-aculab-client/blob/main/src/AcuMobCom-README.md)
 
-Please visit the [Demo App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AcuMobCom) to see it being used practice.
+Please visit the [Example App](https://github.com/aculab-com/react-native-aculab-client/tree/main/example-AcuMobCom) to see it being used practice.
 
-AcuMobCom [Example (Demo) app README](https://github.com/aculab-com/react-native-aculab-client/blob/main/example-AcuMobCom/AcuMobCom-Example-README.md)
+AcuMobCom [Example app README](https://github.com/aculab-com/react-native-aculab-client/blob/main/example-AcuMobCom/AcuMobCom-Example-README.md)
 
 ---
 
@@ -39,9 +39,9 @@ AculabCall is a react native component allowing iOS and Android platforms to use
 
 AculabCall [README](https://github.com/aculab-com/react-native-aculab-client/blob/callkeepdev/src/AculabCall-README.md)
 
-Please visit the [Demo App](https://github.com/aculab-com/react-native-aculab-client/tree/callkeepdev/example-AculabCall) to see it being used practice.
+Please visit the [Example App](https://github.com/aculab-com/react-native-aculab-client/tree/callkeepdev/example-AculabCall) to see it being used practice.
 
-AculabCall [Example (Demo) app README](https://github.com/aculab-com/react-native-aculab-client/blob/callkeepdev/example-AculabCall/AculabCall-Example-README.md)
+AculabCall [Example app README](https://github.com/aculab-com/react-native-aculab-client/blob/callkeepdev/example-AculabCall/AculabCall-Example-README.md)
 
 ---
 
