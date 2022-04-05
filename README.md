@@ -45,6 +45,14 @@ AculabCall [Example (Demo) app README](https://github.com/aculab-com/react-nativ
 
 ---
 
+### Bitcode issue
+
+If you encounter a Bitcode issue coming from WebRTC framework while releasing your app for iOS you have two potions:
+
+1. Disable Bitcode for your app, then release.
+
+2. [Download the bitcode](https://github.com/jitsi/jitsi-meet/issues/4209) by running this script: node_modules/react-native-webrtc/tools/downloadBitcode.sh, then release.
+
 ## License
 
 MIT
