@@ -23,10 +23,10 @@ Please visit the [Example App](https://github.com/aculab-com/react-native-aculab
 
 ### Install the package
 
-Install react-native-AcuMobCom, react-native-webrtc and react-native-callkeep.
+Install react-native-aculab-client, react-native-webrtc and react-native-callkeep.
 
 ```sh
-npm install --save react-native-acumobcom react-native-webrtc react-native-callkeep
+npm install --save react-native-aculab-client react-native-webrtc react-native-callkeep
 ```
 
 ### Install pods for ios
@@ -148,8 +148,6 @@ Add `Intents.framework` (and mark it `Optional`)
 
 [Example](https://github.com/react-native-webrtc/react-native-callkeep/blob/master/docs/ios-installation.md#1-link-required-libraries)
 
-![iOS Other libraries](pictures/ios-other-libraries.png)
-
 ##### 2. Add header search path
 
 Click on `Build Settings` tab, then search for `Header Search Paths`.
@@ -166,9 +164,9 @@ add the following permissions
 
 ``` xml
 <key>NSCameraUsageDescription</key>
-<string>for video</string>
+<string>video in call</string>
 <key>NSMicrophoneUsageDescription</key>
-<string>for chat</string>
+<string>audio in call</string>
 <key>UIBackgroundModes</key>
 <array>
   <string>voip</string>
@@ -179,7 +177,7 @@ add the following permissions
 
 yourProject/ios/yourProject/AppDelegate.m
 
-4.1. Import Library:
+4.1. Import Library: add RNCallKeep.h right bellow AppDelegate.h
 
 ```diff
 #import "RNCallKeep.h"

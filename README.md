@@ -37,9 +37,9 @@ Android incoming call is displayed as notification + fullscreen intent, it also 
 [![react-native-webrtc](https://img.shields.io/npm/dependency-version/react-native-aculab-client/peer/react-native-webrtc)](https://www.npmjs.com/package/react-native-webrtc)
 [![react-native-callkeep](https://img.shields.io/npm/dependency-version/react-native-aculab-client/dev/react-native-callkeep)](https://www.npmjs.com/package/react-native-callkeep)
 
-AculabCall [README](https://github.com/aculab-com/react-native-aculab-client/blob/callkeepdev/src/AculabCall-README.md)
+AculabCall [README](https://github.com/aculab-com/react-native-aculab-client/blob/aculabcall/src/AculabCall-README.md)
 
-The [Example App](https://github.com/aculab-com/react-native-aculab-client/tree/callkeepdev/example-AculabCall) shows it being used practice ([README](https://github.com/aculab-com/react-native-aculab-client/blob/callkeepdev/example-AculabCall/AculabCall-Example-README.md)).
+The [Example App](https://github.com/aculab-com/react-native-aculab-client/tree/aculabcall/example-AculabCall) shows it being used practice ([README](https://github.com/aculab-com/react-native-aculab-client/blob/aculabcall/example-AculabCall/AculabCall-Example-README.md)).
 
 ---
 

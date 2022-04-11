@@ -22,10 +22,10 @@ Please visit the [Example App](https://github.com/aculab-com/react-native-aculab
 
 ### Install the package
 
-Install react-native-AcuMobCom and react-native-webrtc.
+Install react-native-aculab-client and react-native-webrtc.
 
 ```sh
-npm install --save react-native-acumobcom react-native-webrtc
+npm install --save react-native-aculab-client react-native-webrtc
 ```
 
 ### Install pods for ios
