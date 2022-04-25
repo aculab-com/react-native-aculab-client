@@ -124,7 +124,9 @@ class AculabCall extends AcuMobCom {
     console.log('[ AculabCall ]', 'CallKeep Initialized', appName);
 
     // Add RNCallKit Events
-    RNCallKeep.addEventListener('didDisplayIncomingCall', () => this.onIncomingCallDisplayed());
+    RNCallKeep.addEventListener('didDisplayIncomingCall', (callUUID) =>
+      this.onIncomingCallDisplayed(callUUID)
+    );
 
     // RNCallKeep.addEventListener('answerCall', this.answerCall.bind(this));
     RNCallKeep.addEventListener('answerCall', () => this.answerCall());
@@ -242,8 +244,11 @@ class AculabCall extends AcuMobCom {
   /**
    * Called when CallKeep displays incoming call UI
    */
-  onIncomingCallDisplayed() {
-    console.log('[ AculabCall ]', 'onIncomingCallDisplayed');
+  onIncomingCallDisplayed({ callUUID }: any) {
+    console.log('[ AculabCall ]', 'onIncomingCallDisplayed, uuid:', callUUID);
+    if (Platform.OS === 'ios') {
+      this.setState({ callUuid: callUUID });
+    }
     this.setState({ incomingUI: true });
     this.setState({ callKeepCallActive: true });
   }
