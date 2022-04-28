@@ -6,7 +6,7 @@ import { styles, COLOURS } from './styles';
 import type { AuthStackParam } from './types';
 import { MenuButton } from './components/MenuButton';
 import { getToken, deleteSpaces, showAlert } from 'react-native-aculab-client';
-import { DEV_CONSTANTS } from '../../devConstants';
+import { DEV_CONSTANTS } from '../../src/devConstants.dev';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
