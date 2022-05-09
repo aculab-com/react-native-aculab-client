@@ -55,12 +55,4 @@ const App = () => {
   );
 };
 
-// const App = () => {
-//   return (
-//     <View>
-//       <Text>Kunda kunda</Text>
-//     </View>
-//   );
-// };
-
 export default App;

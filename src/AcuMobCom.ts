@@ -116,7 +116,9 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
    * Unregister - set default state to client and webRTCToken
    */
   unregister(): void {
-    this.disableIncomingCalls();
+    if (this.state.client) {
+      this.disableIncomingCalls();
+    }
     this.setState({ webRTCToken: '' });
     this.setState({ client: null });
   }
