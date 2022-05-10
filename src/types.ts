@@ -53,7 +53,7 @@ export interface AcuMobComState {
   // CallKeep
   callUuid?: string | number[];
   callType?: 'none' | 'client' | 'service';
-  callAnswered?: boolean;
+  callUIInteraction?: 'none' | 'answered' | 'rejected';
   incomingUI?: boolean;
   callKeepCallActive?: boolean;
 

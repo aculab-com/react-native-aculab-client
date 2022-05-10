@@ -306,7 +306,9 @@ Use state **callState** as indication of current state.
 | callType                  | 'none'            | 'none'        | flag who is calling/being called                                         |
 |                           | 'client'          |               |                                                                          |
 |                           | 'service'         |               |                                                                          |
-| callAnswered              | boolean           | false         | Flag: Is true when call was answered, goes false on disconnected         |
+| callUIInteraction         | 'none'            | 'none'        | Flag: indicating how user interacted with incoming call UI              |
+|                           | 'answered'        |               |                                                                          |
+|                           | 'rejected'        |               |                                                                          |
 | connectingCall            | boolean           | false         | Flag: Free to use for remote notifications (when connected it goes false)|
 | incomingUI                | boolean           | false         | Flag: True when incoming call notification is being displayed            |
 | callKeepCallActive        | boolean           | false         | Flag: True when call in progress uses CallKeep                           |

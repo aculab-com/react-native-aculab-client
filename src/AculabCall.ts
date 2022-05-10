@@ -33,7 +33,7 @@ class AculabCall extends AcuMobCom {
     incomingCallClientId: '',
     callUuid: '',
     callType: 'none',
-    callAnswered: false,
+    callUIInteraction: 'none',
     connectingCall: false,
     incomingUI: false,
     callKeepCallActive: false,
@@ -206,7 +206,7 @@ class AculabCall extends AcuMobCom {
     console.log('[ AculabCall ]', 'endCall');
     if (this.state.incomingUI) {
       this.reject();
-    } else if (this.state.callAnswered || this.state.callState === 'ringing') {
+    } else if (this.state.callUIInteraction === 'answered' || this.state.callState === 'ringing') {
       this.stopCall();
     }
   }
@@ -249,7 +249,10 @@ class AculabCall extends AcuMobCom {
     if (Platform.OS === 'ios') {
       this.setState({ callUuid: callUUID });
     }
-    this.setState({ incomingUI: true });
+    if (this.state.callUIInteraction === 'none') {
+      console.log('[ AculabCall ]', 'onIncomingCallDisplayed, incomingUI:', this.state.incomingUI);
+      this.setState({ incomingUI: true });
+    }
     this.setState({ callKeepCallActive: true });
   }
 
@@ -270,9 +273,14 @@ class AculabCall extends AcuMobCom {
   answerCall() {
     console.log('[ AculabCall ]', 'answerCall');
     this.setState({ callType: 'client' });
-    if (!this.state.callAnswered) {
-      this.answer();
-      this.setState({ callAnswered: true });
+    if (this.state.callUIInteraction === 'none') {
+      if (this.state.callState === 'incoming call') {
+        this.answer();
+        this.setState({ callUIInteraction: 'answered' });
+        this.setState({ connectingCall: false });
+      } else {
+        this.setState({ connectingCall: true });
+      }
     }
     this.setState({ incomingUI: false });
   }
@@ -348,9 +356,9 @@ class AculabCall extends AcuMobCom {
   connected(obj: any): void {
     super.connected(obj);
     RNCallKeep.setCurrentCallActive(<string>this.state.callUuid);
-    RNCallKeep.reportConnectedOutgoingCallWithUUID(<string>this.state.callUuid); // for ios outbound call correct call logging
+    // RNCallKeep.reportConnectedOutgoingCallWithUUID(<string>this.state.callUuid); // for ios outbound call correct call logging
     this.setState({ connectingCall: false });
-    this.setState({ callAnswered: true });
+    this.setState({ callUIInteraction: 'answered' });
     this.startCounter();
   }
 
@@ -361,7 +369,7 @@ class AculabCall extends AcuMobCom {
   onIncoming(obj: any): void {
     console.log('[ AculabCall ]', 'onIncoming incomingUI:', this.state.incomingUI);
     super.onIncoming(obj);
-    if (this.state.incomingUI === false) {
+    if (!this.state.incomingUI && this.state.callUIInteraction === 'none') {
       this.getCallUuid();
       if (Platform.OS === 'ios') {
         RNCallKeep.displayIncomingCall(
@@ -444,11 +452,11 @@ class AculabCall extends AcuMobCom {
       this.createLastCallObject();
     }
     this.setState({ callKeepCallActive: false });
-    this.setState({ callAnswered: false });
+    this.setState({ callUIInteraction: 'none' });
     this.setState({ callType: 'none' });
     setTimeout(() => {
       this.setState({ callUuid: '' });
-    }, 100);
+    }, 1000);
     super.callDisconnected(obj);
   }
 

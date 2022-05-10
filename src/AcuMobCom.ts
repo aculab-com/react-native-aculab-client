@@ -70,11 +70,6 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
     remoteVideoMuted: false,
     speakerOn: false,
     incomingCallClientId: '',
-    callUuid: '',
-    callType: 'none',
-    callAnswered: false,
-    incomingUI: false,
-    connectingCall: false,
   };
 
   constructor(props: AcuMobComProps) {
