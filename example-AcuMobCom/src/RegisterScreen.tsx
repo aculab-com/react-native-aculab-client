@@ -13,12 +13,20 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 type Props = NativeStackNavigationProp<AuthStackParam, 'AcuMobCom'>;
 
 export const RegisterScreen = () => {
-  const [webRTCAccessKey, setWebRTCAccessKey] = useState(DEV_CONSTANTS.webRTCAccessKey);
+  const [webRTCAccessKey, setWebRTCAccessKey] = useState(
+    DEV_CONSTANTS.webRTCAccessKey
+  );
   const [apiAccessKey, setApiAccessKey] = useState(DEV_CONSTANTS.apiAccessKey);
-  const [cloudRegionId, setCloudRegionId] = useState(DEV_CONSTANTS.cloudRegionId);
-  const [cloudUsername, setCloudUsername] = useState(DEV_CONSTANTS.cloudUsername);
+  const [cloudRegionId, setCloudRegionId] = useState(
+    DEV_CONSTANTS.cloudRegionId
+  );
+  const [cloudUsername, setCloudUsername] = useState(
+    DEV_CONSTANTS.cloudUsername
+  );
   const [logLevel, setLogLevel] = useState(DEV_CONSTANTS.logLevel);
-  const [registerClientId, setRegisterClientId] = useState(DEV_CONSTANTS.registerClientId);
+  const [registerClientId, setRegisterClientId] = useState(
+    DEV_CONSTANTS.registerClientId
+  );
   const [webRTCToken, setWebRTCToken] = useState('None');
   const navigation = useNavigation<Props>();
 

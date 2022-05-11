@@ -30,7 +30,8 @@ export const getToken = async (webRTCToken: WebRTCToken): Promise<string> => {
     body: '',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + base64.encode(username + ':' + webRTCToken.apiAccessKey),
+      'Authorization':
+        'Basic ' + base64.encode(username + ':' + webRTCToken.apiAccessKey),
     },
   })
     .then((response) => {
@@ -147,18 +148,21 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
       console.log('[ AcuMobCom ]', 'enter client ID to call');
       return;
     } else if (this.callCheck()) {
-      this.setState({ callClientId: deleteSpaces(this.state.callClientId) }, () => {
-        this.setState({ callState: 'calling' });
-        this.state.callOptions.constraints = { audio: true, video: true };
-        this.state.callOptions.receiveAudio = true;
-        this.state.callOptions.receiveVideo = true;
-        this.state.call = this.state.client.callClient(
-          this.state.callClientId,
-          this.state.webRTCToken,
-          this.state.callOptions
-        );
-        this.setupCbCallOut(this);
-      });
+      this.setState(
+        { callClientId: deleteSpaces(this.state.callClientId) },
+        () => {
+          this.setState({ callState: 'calling' });
+          this.state.callOptions.constraints = { audio: true, video: true };
+          this.state.callOptions.receiveAudio = true;
+          this.state.callOptions.receiveVideo = true;
+          this.state.call = this.state.client.callClient(
+            this.state.callClientId,
+            this.state.webRTCToken,
+            this.state.callOptions
+          );
+          this.setupCbCallOut(this);
+        }
+      );
     }
   }
 
@@ -171,10 +175,15 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
       console.log('[ AcuMobCom ]', 'enter service name to call');
       return;
     } else if (this.callCheck()) {
-      this.setState({ serviceName: deleteSpaces(this.state.serviceName) }, () => {
-        this.state.call = this.state.client.callService(this.state.serviceName);
-        this.setupCbCallOut(this);
-      });
+      this.setState(
+        { serviceName: deleteSpaces(this.state.serviceName) },
+        () => {
+          this.state.call = this.state.client.callService(
+            this.state.serviceName
+          );
+          this.setupCbCallOut(this);
+        }
+      );
     }
   }
 
@@ -192,9 +201,15 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
    */
   swapCam(): void {
     if (this.state.remoteStream === null) {
-      console.log('[ AcuMobCom ]', 'swap camera allowed only when calling another client');
+      console.log(
+        '[ AcuMobCom ]',
+        'swap camera allowed only when calling another client'
+      );
     } else if (this.state.localVideoMuted) {
-      console.log('[ AcuMobCom ]', 'swap camera allowed only when local video is streaming');
+      console.log(
+        '[ AcuMobCom ]',
+        'swap camera allowed only when local video is streaming'
+      );
     } else {
       var stream = this.getLocalStream(); //NEVER MORE THAN ONE STREAM IN THE ARRAY
       //Assume first stream and first video track for now

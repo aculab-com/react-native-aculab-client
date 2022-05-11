@@ -10,7 +10,13 @@ import { RegisterScreen } from './RegisterScreen';
 const Stack = createNativeStackNavigator();
 
 function AcuMobComScreen({ route }: any) {
-  const { webRTCAccessKey, cloudRegionId, logLevel, registerClientId, webRTCToken } = route.params;
+  const {
+    webRTCAccessKey,
+    cloudRegionId,
+    logLevel,
+    registerClientId,
+    webRTCToken,
+  } = route.params;
   return (
     <View style={styles.container}>
       <AcuMob
@@ -37,7 +43,11 @@ function AppStack() {
         name="Register"
         component={RegisterScreen}
       />
-      <Stack.Screen options={{ headerShown: false }} name="AcuMobCom" component={AcuMobComScreen} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="AcuMobCom"
+        component={AcuMobComScreen}
+      />
     </Stack.Navigator>
   );
 }

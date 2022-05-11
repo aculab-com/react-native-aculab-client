@@ -58,7 +58,7 @@ export interface AcuMobComState {
   callKeepCallActive?: boolean;
 
   // use this flag for notifications
-  connectingCall?: boolean;
+  notificationCall?: boolean;
 }
 
 export interface WebRTCToken {

@@ -42,7 +42,10 @@ export function incomingCallNotification(
   notificationId: number
 ): void {
   if (Platform.OS !== 'android') {
-    console.log('[ AculabClientModule ]', 'incomingCallNotification is Android function ONLY');
+    console.log(
+      '[ AculabClientModule ]',
+      'incomingCallNotification is Android function ONLY'
+    );
     return;
   }
   AculabClientModule.incomingCallNotification(
@@ -75,4 +78,6 @@ export function cancelIncomingCallNotification(): void {
  * Android ONLY
  */
 export const aculabClientEvent =
-  Platform.OS === 'android' ? new NativeEventEmitter(AculabClientModule) : undefined;
+  Platform.OS === 'android'
+    ? new NativeEventEmitter(AculabClientModule)
+    : undefined;
