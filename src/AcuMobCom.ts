@@ -47,34 +47,36 @@ export const getToken = async (webRTCToken: WebRTCToken): Promise<string> => {
 /**
  * AcuMobCom is a complex component Allowing WebRTC communication using Aculab Cloud Services.
  */
-class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
-  state: AcuMobComState = {
-    remoteStream: null,
-    localStream: null,
-    dtmfEnabled: false,
-    serviceName: '', // service name to call
-    webRTCToken: '',
-    client: null,
-    call: null,
-    callClientId: '', // client ID to call
-    callState: 'idle', // human readable call status
-    callOptions: {
-      constraints: { audio: false, video: false },
-      receiveAudio: false,
-      receiveVideo: false,
-    },
-    outputAudio: false,
-    mic: false,
-    outputVideo: false,
-    camera: false,
-    localVideoMuted: false,
-    remoteVideoMuted: false,
-    speakerOn: false,
-    incomingCallClientId: '',
-  };
-
-  constructor(props: AcuMobComProps) {
+export class AculabBaseComponent<
+  Props extends AcuMobComProps,
+  State extends AcuMobComState
+> extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
+    this.state = {
+      remoteStream: null,
+      localStream: null,
+      dtmfEnabled: false,
+      serviceName: '', // service name to call
+      webRTCToken: '',
+      client: null,
+      call: null,
+      callClientId: '', // client ID to call
+      callState: 'idle', // human readable call status
+      callOptions: {
+        constraints: { audio: false, video: false },
+        receiveAudio: false,
+        receiveVideo: false,
+      },
+      outputAudio: false,
+      mic: false,
+      outputVideo: false,
+      camera: false,
+      localVideoMuted: false,
+      remoteVideoMuted: false,
+      speakerOn: false,
+      incomingCallClientId: '',
+    } as State;
     registerGlobals();
   }
 
@@ -155,12 +157,16 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
           this.state.callOptions.constraints = { audio: true, video: true };
           this.state.callOptions.receiveAudio = true;
           this.state.callOptions.receiveVideo = true;
-          this.state.call = this.state.client.callClient(
-            this.state.callClientId,
-            this.state.webRTCToken,
-            this.state.callOptions
+          this.setState(
+            {
+              call: this.state.client.callClient(
+                this.state.callClientId,
+                this.state.webRTCToken,
+                this.state.callOptions
+              ),
+            },
+            () => this.setupCbCallOut(this)
           );
-          this.setupCbCallOut(this);
         }
       );
     }
@@ -178,10 +184,12 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
       this.setState(
         { serviceName: deleteSpaces(this.state.serviceName) },
         () => {
-          this.state.call = this.state.client.callService(
-            this.state.serviceName
+          this.setState(
+            {
+              call: this.state.client.callService(this.state.serviceName),
+            },
+            () => this.setupCbCallOut(this)
           );
-          this.setupCbCallOut(this);
         }
       );
     }
@@ -477,4 +485,7 @@ class AcuMobCom extends Component<AcuMobComProps, AcuMobComState> {
   }
 }
 
-export default AcuMobCom;
+export default class AcuMobCom extends AculabBaseComponent<
+  AcuMobComProps,
+  AcuMobComState
+> {}

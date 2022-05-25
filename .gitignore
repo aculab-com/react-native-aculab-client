@@ -61,4 +61,4 @@ android/keystores/debug.keystore
 lib/
 
 # dev variables
-devConstants.ts
+src/devConstants.dev.ts

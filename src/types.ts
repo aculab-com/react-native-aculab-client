@@ -49,16 +49,27 @@ export interface AcuMobComState {
   // mute state flags
   localVideoMuted: boolean;
   remoteVideoMuted: boolean;
+}
 
+export interface AculabCallState extends AcuMobComState {
   // CallKeep
-  callUuid?: string | number[];
-  callType?: 'none' | 'client' | 'service';
-  callUIInteraction?: 'none' | 'answered' | 'rejected';
-  incomingUI?: boolean;
-  callKeepCallActive?: boolean;
+  callUuid: string | number[];
+  callType: 'none' | 'client' | 'service';
+  callUIInteraction: 'none' | 'answered' | 'rejected';
+  incomingUI: boolean;
+  callKeepCallActive: boolean;
 
   // use this flag for notifications
-  notificationCall?: boolean;
+  notificationCall: boolean;
+}
+
+export interface AculabCallProps extends AcuMobComProps {
+  call?: {
+    uuid: string;
+    caller: string;
+    callee: string;
+    answered: boolean;
+  };
 }
 
 export interface WebRTCToken {

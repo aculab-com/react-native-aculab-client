@@ -1,24 +1,24 @@
 import { Platform, PermissionsAndroid } from 'react-native';
-import AcuMobCom from './AcuMobCom';
+import { AculabBaseComponent } from './AcuMobCom';
 import {
   incomingCallNotification,
   cancelIncomingCallNotification,
   aculabClientEvent,
 } from './AculabClientModule';
 import RNCallKeep, { IOptions } from 'react-native-callkeep';
-import type { AcuMobComState, CallRecord } from './types';
+import type { AculabCallProps, AculabCallState, CallRecord } from './types';
 import uuid from 'react-native-uuid';
 
-class AculabCall extends AcuMobCom {
-  state: AcuMobComState = {
+class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
+  state: AculabCallState = {
     remoteStream: null,
     localStream: null,
     dtmfEnabled: false,
-    serviceName: 'webrtcdemo', // service name to call
+    serviceName: '', // service name to call
     webRTCToken: '',
     client: null,
     call: null,
-    callClientId: 'marmar', // client ID to call
+    callClientId: '', // client ID to call
     callState: 'idle', // human readable call status
     callOptions: {
       constraints: { audio: false, video: false },
@@ -29,17 +29,17 @@ class AculabCall extends AcuMobCom {
     mic: false,
     outputVideo: false,
     camera: false,
+    localVideoMuted: false,
+    remoteVideoMuted: false,
     speakerOn: false,
     incomingCallClientId: '',
+    //
     callUuid: '',
     callType: 'none',
     callUIInteraction: 'none',
-    notificationCall: false,
     incomingUI: false,
     callKeepCallActive: false,
-    localVideoMuted: false,
-    remoteVideoMuted: false,
-    timer: 0,
+    notificationCall: false,
   };
 
   private androidListenerA: any;
