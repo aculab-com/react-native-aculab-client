@@ -386,6 +386,15 @@ class AcuCall extends AculabCall {
     this.destroyListeners();
   }
 
+  componentDidUpdate() {
+    if (
+      this.state.callUIInteraction === 'answered' &&
+      this.state.callState === 'incoming call'
+    ) {
+      this.answerCall();
+    }
+  }
+
   CallHeadComponent = (): any => {
     return (
       <View style={styles.row}>

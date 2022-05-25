@@ -29,17 +29,17 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
     mic: false,
     outputVideo: false,
     camera: false,
-    localVideoMuted: false,
-    remoteVideoMuted: false,
     speakerOn: false,
     incomingCallClientId: '',
-    //
     callUuid: '',
     callType: 'none',
     callUIInteraction: 'none',
+    notificationCall: false,
     incomingUI: false,
     callKeepCallActive: false,
-    notificationCall: false,
+    localVideoMuted: false,
+    remoteVideoMuted: false,
+    timer: 0,
   };
 
   private androidListenerA: any;
@@ -129,7 +129,13 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
     );
 
     // RNCallKeep.addEventListener('answerCall', this.answerCall.bind(this));
-    RNCallKeep.addEventListener('answerCall', () => this.answerCall());
+    RNCallKeep.addEventListener('answerCall', () => {
+      if (Platform.OS === 'ios') {
+        console.log('CALL ANSWERED IN AculabCall');
+        this.setState({ callType: 'client' });
+        this.setState({ callUIInteraction: 'answered' });
+      }
+    });
 
     // RNCallKeep.addEventListener('didPerformDTMFAction', this.onPerformDTMFAction.bind(this));
     RNCallKeep.addEventListener('didPerformDTMFAction', (digits) =>
@@ -155,8 +161,13 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
       RNCallKeep.addEventListener(
         'showIncomingCallUi',
         ({ handle, callUUID, name }) => {
+          console.log(
+            'showIncomingCallUi, handle, uuid, name',
+            handle,
+            callUUID,
+            name
+          );
           this.displayCustomIncomingUI(handle, callUUID, name);
-          this.setState({ callKeepCallActive: true });
         }
       );
 
@@ -164,8 +175,13 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
       this.androidListenerA = aculabClientEvent.addListener(
         'rejectedCallAndroid',
         (_payload) => {
-          // console.log('[ AculabCall ]', 'endCallAndroid', payload);
-          this.endCall();
+          console.log('[ AculabCall ]', 'endCallAndroid', _payload);
+          this.setState({ incomingUI: false });
+          this.endCallKeepCall(this.state.callUuid as string);
+          this.setState({ callKeepCallActive: false });
+          this.setState({ callUIInteraction: 'rejected' }, () =>
+            this.endCall()
+          );
         }
       );
 
@@ -173,8 +189,9 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
       this.androidListenerB = aculabClientEvent.addListener(
         'answeredCallAndroid',
         (_payload) => {
-          // console.log('[ AculabCall ]', 'answerCallAndroid', payload);
-          this.answerCall();
+          console.log('[ AculabCall ]', 'answerCallAndroid', _payload);
+          this.setState({ callType: 'client' });
+          this.setState({ callUIInteraction: 'answered' });
         }
       );
     }
@@ -222,12 +239,9 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
       this.state.incomingUI ||
       this.state.callUIInteraction === 'rejected'
     ) {
-      this.reject();
-    } else if (
-      this.state.callUIInteraction === 'answered' ||
-      this.state.callState === 'ringing'
-    ) {
-      this.stopCall();
+      this.setState({ callUIInteraction: 'none' }, this.reject);
+    } else {
+      this.setState({ callUIInteraction: 'none' }, this.stopCall);
     }
   }
 
@@ -291,14 +305,21 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * Answer incoming call and set states
    */
   answerCall() {
-    // console.log('[ AculabCall ]', 'answerCall interaction ui', this.state.callUIInteraction);
-    this.setState({ callType: 'client' });
+    console.log('[ AculabCall ]', 'answerCall');
+    console.log(
+      '[ AculabCall ]',
+      'answerCall this.state.callState',
+      this.state.callState
+    );
+    console.log(
+      '[ AculabCall ]',
+      'answerCall this.state.callUIInteraction',
+      this.state.callUIInteraction
+    );
     if (
-      this.state.notificationCall &&
-      this.state.callUIInteraction === 'none'
+      this.state.callState === 'incoming call' &&
+      this.state.callUIInteraction === 'answered'
     ) {
-      this.setState({ callUIInteraction: 'answered' });
-    } else if (this.state.callState === 'incoming call') {
       this.setState({ callUIInteraction: 'none' }, this.answer);
     }
     // this.setState({ incomingUI: false });
@@ -340,10 +361,14 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
   endCallKeepCall(endUuid: string, reason?: number) {
     if (reason) {
       RNCallKeep.reportEndCallWithUUID(endUuid, reason);
-      // console.log('[ AculabCall ]', 'endCallKeepCall uuid: ' + endUuid, 'reason: ' + reason);
+      console.log(
+        '[ AculabCall ]',
+        'endCallKeepCall uuid: ' + endUuid,
+        'reason: ' + reason
+      );
     } else {
       RNCallKeep.endCall(endUuid);
-      // console.log('[ AculabCall ]', 'endCallKeepCall callUUID:', endUuid);
+      console.log('[ AculabCall ]', 'endCallKeepCall callUUID:', endUuid);
     }
   }
 
@@ -386,8 +411,9 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
         <string>this.state.callUuid
       ); // for ios outbound call correct call logging
     }
+    this.setState({ callKeepCallActive: true });
     this.setState({ notificationCall: false });
-    this.setState({ callUIInteraction: 'answered' });
+    // this.setState({ callUIInteraction: 'answered' });
     this.setState({ incomingUI: false });
     this.startCounter();
   }
@@ -400,6 +426,9 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
     // console.log('[ AculabCall ]', 'onIncoming incomingUI:', this.state.incomingUI);
     super.onIncoming(obj);
     if (!this.state.incomingUI && this.state.callUIInteraction === 'none') {
+      if (!this.state.callKeepCallActive) {
+        this.setState({ callKeepCallActive: true });
+      }
       this.getCallUuid(() => {
         if (Platform.OS === 'ios') {
           RNCallKeep.displayIncomingCall(
@@ -472,11 +501,15 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
 
   // Overwritten function
   callDisconnected(obj: any): void {
+    console.log('[ callDisconnected ]', Platform.OS);
     if (this.state.callKeepCallActive === true) {
+      console.log('[ callDisconnected ] callkeep true', Platform.OS);
       if (Platform.OS === 'android' && this.state.incomingUI) {
+        console.log('[ callDisconnected ] android', Platform.OS);
         RNCallKeep.rejectCall(<string>this.state.callUuid);
         cancelIncomingCallNotification();
       } else {
+        console.log('[ callDisconnected ] ios', Platform.OS);
         this.endCallKeepCall(<string>this.state.callUuid);
       }
       this.setState({ incomingUI: false });
@@ -494,7 +527,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
 
   /**
    * Android only\
-   * Overwrite this function with your custom incoming call UI for android
+   * Overwrite this function with your custom incoming call UI for android if you want to
    */
   displayCustomIncomingUI(
     handle?: string,
