@@ -175,13 +175,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
       this.androidListenerA = aculabClientEvent.addListener(
         'rejectedCallAndroid',
         (_payload) => {
-          console.log('[ AculabCall ]', 'endCallAndroid', _payload);
-          this.setState({ incomingUI: false });
-          this.endCallKeepCall(this.state.callUuid as string);
-          this.setState({ callKeepCallActive: false });
-          this.setState({ callUIInteraction: 'rejected' }, () =>
-            this.endCall()
-          );
+          this.rejectedCallAndroid(_payload);
         }
       );
 
@@ -189,12 +183,24 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
       this.androidListenerB = aculabClientEvent.addListener(
         'answeredCallAndroid',
         (_payload) => {
-          console.log('[ AculabCall ]', 'answerCallAndroid', _payload);
-          this.setState({ callType: 'client' });
-          this.setState({ callUIInteraction: 'answered' });
+          this.answeredCallAndroid(_payload);
         }
       );
     }
+  }
+
+  rejectedCallAndroid(payload: any) {
+    console.log('[ AculabCall ]', 'endCallAndroid', payload);
+    this.setState({ incomingUI: false });
+    this.endCallKeepCall(this.state.callUuid as string);
+    this.setState({ callKeepCallActive: false });
+    this.setState({ callUIInteraction: 'rejected' }, () => this.endCall());
+  }
+
+  answeredCallAndroid(payload: any) {
+    console.log('[ AculabCall ]', 'answerCallAndroid', payload);
+    this.setState({ callType: 'client' });
+    this.setState({ callUIInteraction: 'answered' });
   }
 
   /**
@@ -230,15 +236,13 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    */
   endCall() {
     // console.log('[ AculabCall ]', 'endCall');
-    if (
-      this.state.notificationCall &&
-      this.state.callUIInteraction === 'none'
-    ) {
-      this.setState({ callUIInteraction: 'rejected' });
-    } else if (
-      this.state.incomingUI ||
-      this.state.callUIInteraction === 'rejected'
-    ) {
+    // if (
+    //   this.state.notificationCall &&
+    //   this.state.callUIInteraction === 'none'
+    // ) {
+    //   this.setState({ callUIInteraction: 'rejected' });
+    // } else
+    if (this.state.incomingUI || this.state.callUIInteraction === 'rejected') {
       this.setState({ callUIInteraction: 'none' }, this.reject);
     } else {
       this.setState({ callUIInteraction: 'none' }, this.stopCall);
@@ -279,7 +283,11 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * Called when CallKeep displays incoming call UI
    */
   onIncomingCallDisplayed({ callUUID }: any) {
-    // console.log('[ AculabCall ]', 'onIncomingCallDisplayed, uuid:', callUUID);
+    console.log(
+      '[ AculabCall ]',
+      'onIncomingCallDisplayed, platform:',
+      Platform.OS
+    );
     if (Platform.OS === 'ios') {
       this.setState({ callUuid: callUUID });
     }
@@ -540,6 +548,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
       name,
     });
     incomingCallNotification(
+      callUUID!,
       'acu_incoming_call',
       'Incoming call',
       'channel used to display incoming call notification',

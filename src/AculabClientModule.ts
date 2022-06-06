@@ -28,6 +28,7 @@ export function turnOnSpeaker(speakerOn: boolean): void {
  * Use Listeners to pick up when call is accepted or rejected:\
  * DeviceEventEmitter.addListener('rejectedCallAndroid', (payload) => {});\
  * DeviceEventEmitter.addListener('answeredCallAndroid', (payload) => {});
+ * @param {string} uuid call uuid
  * @param {string} channelId pass desired chanel ID
  * @param {string} channelName pass desired chanel name
  * @param {string} channelDescription pass channel description
@@ -35,6 +36,7 @@ export function turnOnSpeaker(speakerOn: boolean): void {
  * @param {number} notificationId pass desired notification id
  */
 export function incomingCallNotification(
+  uuid: string,
   channelId: string,
   channelName: string,
   channelDescription: string,
@@ -49,6 +51,7 @@ export function incomingCallNotification(
     return;
   }
   AculabClientModule.incomingCallNotification(
+    uuid,
     channelId,
     channelName,
     channelDescription,

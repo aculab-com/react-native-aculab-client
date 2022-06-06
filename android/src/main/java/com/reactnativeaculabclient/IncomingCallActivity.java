@@ -19,16 +19,18 @@ public class IncomingCallActivity extends Activity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    String name = getIntent().getExtras().getString("name");
+    String caller = getIntent().getExtras().getString("info");
+    String uuid = getIntent().getExtras().getString("uuid");
+
     if (getIntent().hasExtra("accepted")) {
-      acceptCall();
+      acceptCall(name, caller, uuid);
     }
     if (getIntent().hasExtra("rejected")) {
-      rejectCall();
+      rejectCall(name, caller, uuid);
     }
     if (getIntent().hasExtra("fullScreenCall")) {
-      String name = getIntent().getExtras().getString("name");
-      String info = getIntent().getExtras().getString("info");
-      fullScreenCall(name, info);
+      fullScreenCall(name, caller, uuid);
     }
   }
 
@@ -37,30 +39,36 @@ public class IncomingCallActivity extends Activity {
     // Dont back
   }
 
-  public void acceptCall() {
+  public void acceptCall(String name, String caller, String uuid) {
     WritableMap params = Arguments.createMap();
     params.putBoolean("callAccepted", true);
+    params.putString("name", name);
+    params.putString("caller", caller);
+    params.putString("uuid", uuid);
     sendEvent("answeredCallAndroid", params);
     finish();
     stopService();
   }
 
-  private void rejectCall() {
+  private void rejectCall(String name, String caller, String uuid) {
     WritableMap params = Arguments.createMap();
     params.putBoolean("callAccepted", false);
+    params.putString("name", name);
+    params.putString("caller", caller);
+    params.putString("uuid", uuid);
     sendEvent("rejectedCallAndroid", params);
     finish();
     stopService();
   }
 
-  private void fullScreenCall(String name, String info) {
+  private void fullScreenCall(String name, String caller, String uuid) {
 
     setContentView(R.layout.activity_call_incoming);
 
     TextView tvName = findViewById(R.id.tvName);
     TextView tvInfo = findViewById(R.id.tvInfo);
     tvName.setText(name);
-    tvInfo.setText(info);
+    tvInfo.setText(caller);
 
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
       | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
@@ -69,7 +77,7 @@ public class IncomingCallActivity extends Activity {
     acceptCallBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        acceptCall();
+        acceptCall(name, caller, uuid);
       }
     });
 
@@ -77,7 +85,7 @@ public class IncomingCallActivity extends Activity {
     rejectCallBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        rejectCall();
+        rejectCall(name, caller, uuid);
       }
     });
   }

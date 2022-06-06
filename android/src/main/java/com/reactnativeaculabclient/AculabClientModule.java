@@ -46,8 +46,9 @@ public class AculabClientModule extends ReactContextBaseJavaModule {
 
     // Incoming Call Notification
     @ReactMethod
-    public void incomingCallNotification(String channelId, String channelName, String channelDescription, String contentText, int notificationId) {
+    public void incomingCallNotification(String uuid, String channelId, String channelName, String channelDescription, String contentText, int notificationId) {
       Intent serviceIntent = new Intent(reactContext, IncomingCallService.class)
+        .putExtra("uuid", uuid)
         .putExtra("channelId", channelId)
         .putExtra("channelName", channelName)
         .putExtra("channelDescription", channelDescription)

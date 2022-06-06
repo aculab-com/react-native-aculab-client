@@ -32,6 +32,7 @@ public class IncomingCallService extends ConnectionService {
 
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
+    String uuid = intent.getStringExtra("uuid");
     String channelId = intent.getStringExtra("channelId");
     String channelName = intent.getStringExtra("channelName");
     String channelDescription = intent.getStringExtra("channelDescription");
@@ -44,14 +45,21 @@ public class IncomingCallService extends ConnectionService {
     fullScreenIntent.putExtra("fullScreenCall", true);
     fullScreenIntent.putExtra("name", "Incoming Call");
     fullScreenIntent.putExtra("info", contentText);
+    fullScreenIntent.putExtra("uuid", uuid);
     PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(reactContext, 0, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
     Intent acceptCallIntent = new Intent(reactContext, IncomingCallActivity.class);
     acceptCallIntent.putExtra("accepted", true);
+    acceptCallIntent.putExtra("name", "Incoming Call");
+    acceptCallIntent.putExtra("info", contentText);
+    acceptCallIntent.putExtra("uuid", uuid);
     PendingIntent acceptCallPendingIntent = PendingIntent.getActivity(reactContext, 1, acceptCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
     Intent rejectCallIntent = new Intent(reactContext, IncomingCallActivity.class);
     rejectCallIntent.putExtra("rejected", true);
+    rejectCallIntent.putExtra("name", "Incoming Call");
+    rejectCallIntent.putExtra("info", contentText);
+    rejectCallIntent.putExtra("uuid", uuid);
     PendingIntent rejectCallPendingIntent = PendingIntent.getActivity(reactContext, 2, rejectCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
