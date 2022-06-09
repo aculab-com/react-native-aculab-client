@@ -8,7 +8,7 @@ import {
   incomingCallNotification,
   cancelIncomingCallNotification,
 } from './AculabClientModule';
-import AculabCall from './AculabCall';
+import AculabCall, { initializeCallKeep } from './AculabCall';
 
 export {
   AcuMobCom,
@@ -20,4 +20,5 @@ export {
   showAlert,
   incomingCallNotification,
   cancelIncomingCallNotification,
+  initializeCallKeep,
 };

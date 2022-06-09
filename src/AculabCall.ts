@@ -9,6 +9,45 @@ import RNCallKeep, { IOptions } from 'react-native-callkeep';
 import type { AculabCallProps, AculabCallState, CallRecord } from './types';
 import uuid from 'react-native-uuid';
 
+/**
+ * Run this function before using CallKeep
+ * @param {string} appName - App name for iOS
+ */
+export const initializeCallKeep = async (appName: string) => {
+  const iosSetup = {
+    appName: appName,
+    supportsVideo: true,
+  };
+
+  let androidSetup: IOptions['android'] = {
+    alertTitle: 'Permissions required',
+    alertDescription: 'This application needs to access your phone accounts',
+    cancelButton: 'Cancel',
+    okButton: 'ok',
+    additionalPermissions: [PermissionsAndroid.PERMISSIONS.READ_CONTACTS],
+    selfManaged: true,
+  };
+
+  if (Platform.OS === 'android' && Platform.Version >= 30) {
+    androidSetup.foregroundService = {
+      channelId: 'callkeep_channel',
+      channelName: 'Foreground service',
+      notificationTitle: 'My app is running on background',
+      notificationIcon: 'Path to the resource icon of the notification',
+    };
+  }
+
+  try {
+    RNCallKeep.setup({
+      ios: iosSetup,
+      android: androidSetup,
+    });
+  } catch (err: any) {
+    console.error('[ AculabCall ]', 'initializeCallKeep error:', err.message);
+  }
+  console.log('[ AculabCall ]', 'CallKeep Initialized', appName);
+};
+
 class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
   state: AculabCallState = {
     remoteStream: null,
@@ -40,6 +79,8 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
     localVideoMuted: false,
     remoteVideoMuted: false,
     timer: 0,
+    inboundCall: false,
+    outboundCall: false,
   };
 
   private androidListenerA: any;
@@ -72,7 +113,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
   }
 
   /**
-   * Returns information about the last call
+   * Returns information about the last call on Android
    * @returns CallRecord object - holding information about the last inbound or outbound call
    */
   getLastCall(): CallRecord | undefined {
@@ -86,49 +127,14 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
   }
 
   /**
-   * Run this function before using CallKeep
-   * @param {string} appName - App name for iOS
+   * Add Call Keep event listeners, make sure Call Keep is initialized\
+   * before calling this function.
    */
-  async initializeCallKeep(appName: string) {
-    const iosSetup = {
-      appName: appName,
-      supportsVideo: true,
-    };
-
-    let androidSetup: IOptions['android'] = {
-      alertTitle: 'Permissions required',
-      alertDescription: 'This application needs to access your phone accounts',
-      cancelButton: 'Cancel',
-      okButton: 'ok',
-      additionalPermissions: [PermissionsAndroid.PERMISSIONS.READ_CONTACTS],
-      selfManaged: true,
-    };
-
-    if (Platform.OS === 'android' && Platform.Version >= 30) {
-      androidSetup.foregroundService = {
-        channelId: 'callkeep_channel',
-        channelName: 'Foreground service',
-        notificationTitle: 'My app is running on background',
-        notificationIcon: 'Path to the resource icon of the notification',
-      };
-    }
-
-    try {
-      RNCallKeep.setup({
-        ios: iosSetup,
-        android: androidSetup,
-      });
-    } catch (err: any) {
-      console.error('[ AculabCall ]', 'initializeCallKeep error:', err.message);
-    }
-    console.log('[ AculabCall ]', 'CallKeep Initialized', appName);
-
-    // Add RNCallKit Events
+  addCallKeepListeners() {
     RNCallKeep.addEventListener('didDisplayIncomingCall', (callUUID) =>
       this.onIncomingCallDisplayed(callUUID)
     );
 
-    // RNCallKeep.addEventListener('answerCall', this.answerCall.bind(this));
     RNCallKeep.addEventListener('answerCall', () => {
       if (Platform.OS === 'ios') {
         console.log('CALL ANSWERED IN AculabCall');
@@ -137,7 +143,6 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
       }
     });
 
-    // RNCallKeep.addEventListener('didPerformDTMFAction', this.onPerformDTMFAction.bind(this));
     RNCallKeep.addEventListener('didPerformDTMFAction', (digits) =>
       this.onPerformDTMFAction(digits)
     );
@@ -227,7 +232,6 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    */
   onActivateAudioSession() {
     // you might want to do start playing ringback if it is an outgoing call
-    // console.log('[ AculabCall ]', 'onActivateAudioSession');
   }
 
   /**
@@ -235,25 +239,19 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * terminates call with webrtc
    */
   endCall() {
-    // console.log('[ AculabCall ]', 'endCall');
-    // if (
-    //   this.state.notificationCall &&
-    //   this.state.callUIInteraction === 'none'
-    // ) {
-    //   this.setState({ callUIInteraction: 'rejected' });
-    // } else
     if (this.state.incomingUI || this.state.callUIInteraction === 'rejected') {
       this.setState({ callUIInteraction: 'none' }, this.reject);
     } else {
       this.setState({ callUIInteraction: 'none' }, this.stopCall);
     }
+    this.setState({ outboundCall: false });
+    this.setState({ inboundCall: false });
   }
 
   /**
    * Called when Mute is pressed in CallKeep UI
    */
   onPerformSetMutedCallAction({ muted }: any) {
-    // console.log('[ AculabCall ]', 'onPerformSetMutedCallAction muted:', muted);
     this.callKeepMute(false, muted);
   }
 
@@ -270,7 +268,6 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * Called when CallKeep receives start call action
    */
   onReceiveStartCallAction({ callUUID }: any) {
-    // console.log('[ AculabCall ]', 'onReceiveStartCallAction callUUID:', callUUID);
     this.setState({ callKeepCallActive: true });
     // fix UUID bug in CallKeep (Android bug only)
     // CallKeep uses it's own UUID for outgoing connection, here we retrieve it and use it to end the call
@@ -283,11 +280,6 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * Called when CallKeep displays incoming call UI
    */
   onIncomingCallDisplayed({ callUUID }: any) {
-    console.log(
-      '[ AculabCall ]',
-      'onIncomingCallDisplayed, platform:',
-      Platform.OS
-    );
     if (Platform.OS === 'ios') {
       this.setState({ callUuid: callUUID });
     }
@@ -300,7 +292,6 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * @param {number | string} param0 DTMF number to send
    */
   onPerformDTMFAction({ digits }: any) {
-    // console.log('[ AculabCall ]', 'onPerformDTMFAction digit:', digits);
     this.sendDtmf(digits);
     RNCallKeep.removeEventListener('didPerformDTMFAction');
     RNCallKeep.addEventListener(
@@ -330,7 +321,8 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
     ) {
       this.setState({ callUIInteraction: 'none' }, this.answer);
     }
-    // this.setState({ incomingUI: false });
+    this.setState({ outboundCall: false });
+    this.setState({ inboundCall: false });
   }
 
   /**
@@ -421,8 +413,9 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
     }
     this.setState({ callKeepCallActive: true });
     this.setState({ notificationCall: false });
-    // this.setState({ callUIInteraction: 'answered' });
     this.setState({ incomingUI: false });
+    this.setState({ outboundCall: false });
+    this.setState({ inboundCall: false });
     this.startCounter();
   }
 
@@ -431,7 +424,6 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * @param obj - webrtc object from aculab-webrtc
    */
   onIncoming(obj: any): void {
-    // console.log('[ AculabCall ]', 'onIncoming incomingUI:', this.state.incomingUI);
     super.onIncoming(obj);
     if (!this.state.incomingUI && this.state.callUIInteraction === 'none') {
       if (!this.state.callKeepCallActive) {
@@ -458,6 +450,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
   }
 
   /**
+   * Android only\
    * Log call after ended to Call Log (History)
    */
   createLastCallObject() {
@@ -470,7 +463,6 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
           duration: this.state.timer,
           call: 'client',
         };
-        // console.log('[ AculabCall ]', 'created last call:', this.lastCall);
       } else {
         this.lastCall = {
           name: this.state.incomingCallClientId,
@@ -478,7 +470,6 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
           duration: this.state.timer,
           call: 'client',
         };
-        // console.log('[ AculabCall ]', 'created last call:', this.lastCall);
       }
     } else {
       switch (this.state.callType) {
@@ -489,7 +480,6 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
             duration: this.state.timer,
             call: 'service',
           };
-          // console.log('[ AculabCall ]', 'created last call:', this.lastCall);
           break;
         }
         case 'client': {
@@ -499,7 +489,6 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
             duration: this.state.timer,
             call: 'client',
           };
-          // console.log('[ AculabCall ]', 'created last call:', this.lastCall);
           break;
         }
       }
@@ -513,11 +502,9 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
     if (this.state.callKeepCallActive === true) {
       console.log('[ callDisconnected ] callkeep true', Platform.OS);
       if (Platform.OS === 'android' && this.state.incomingUI) {
-        console.log('[ callDisconnected ] android', Platform.OS);
         RNCallKeep.rejectCall(<string>this.state.callUuid);
         cancelIncomingCallNotification();
       } else {
-        console.log('[ callDisconnected ] ios', Platform.OS);
         this.endCallKeepCall(<string>this.state.callUuid);
       }
       this.setState({ incomingUI: false });
@@ -527,6 +514,8 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
     this.setState({ callUIInteraction: 'none' });
     this.setState({ callType: 'none' });
     this.setState({ notificationCall: false });
+    this.setState({ outboundCall: false });
+    this.setState({ inboundCall: false });
     setTimeout(() => {
       this.setState({ callUuid: '' });
     }, 1000);

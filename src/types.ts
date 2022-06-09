@@ -58,6 +58,8 @@ export interface AculabCallState extends AcuMobComState {
   callUIInteraction: 'none' | 'answered' | 'rejected';
   incomingUI: boolean;
   callKeepCallActive: boolean;
+  inboundCall: boolean;
+  outboundCall: boolean;
 
   // use this flag for notifications
   notificationCall: boolean;

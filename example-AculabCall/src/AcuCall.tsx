@@ -13,12 +13,14 @@ import {
   AculabCall,
   turnOnSpeaker,
   deleteSpaces,
+  initializeCallKeep,
 } from 'react-native-aculab-client';
 import { MenuButton } from './components/MenuButton';
 import { KeypadButton } from './components/KeypadButton';
 import { CallButton } from './components/CallButton';
 import { RoundButton } from './components/RoundButton';
 import { useNavigation } from '@react-navigation/native';
+import { name as appName } from '../app.json';
 
 const MainCallButtons = (props: any) => {
   return (
@@ -378,7 +380,8 @@ const RegisterButton = () => {
 class AcuCall extends AculabCall {
   componentDidMount() {
     this.register();
-    this.initializeCallKeep('AculabCall Example');
+    initializeCallKeep(appName);
+    this.addCallKeepListeners();
   }
 
   componentWillUnmount() {
