@@ -288,6 +288,8 @@ Use state **callState** as indication of current state.
 |                           | 'connecting'      |               | Call was answered, connecting in progress                                 |
 |                           | 'connected'       |               | Peer-to-peer connection established                                       |
 |                           | 'error'           |               | Error state                                                               |
+| inboundCall               | boolean           | false         | Flag - it's true when inbound call                                        |
+| outboundCall              | boolean           | false         | Flag - it's true when outbound call                                       |
 | webRTCToken               | string            | ''            | Holds WebRTC Token after registration                                     |
 | callClientId              | string            | ''            | Holds client ID for outbound call                                         |
 | serviceName               | string            | ''            | Holds service ID for outbound call                                        |

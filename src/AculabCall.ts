@@ -305,24 +305,15 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    */
   answerCall() {
     console.log('[ AculabCall ]', 'answerCall');
+    console.log('[ AculabCall ]', 'inboundCall', this.state.inboundCall);
     console.log(
       '[ AculabCall ]',
-      'answerCall this.state.callState',
-      this.state.callState
-    );
-    console.log(
-      '[ AculabCall ]',
-      'answerCall this.state.callUIInteraction',
+      'answerCall callUIInteraction',
       this.state.callUIInteraction
     );
-    if (
-      this.state.callState === 'incoming call' &&
-      this.state.callUIInteraction === 'answered'
-    ) {
+    if (this.state.inboundCall && this.state.callUIInteraction === 'answered') {
       this.setState({ callUIInteraction: 'none' }, this.answer);
     }
-    this.setState({ outboundCall: false });
-    this.setState({ inboundCall: false });
   }
 
   /**
@@ -331,6 +322,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * @param {string} id service or client name to call
    */
   startCall(type: 'service' | 'client', id: string) {
+    this.setState({ outboundCall: true });
     this.setState({ callType: type });
     if (Platform.OS === 'ios') {
       RNCallKeep.startCall(
@@ -378,7 +370,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * Answer call CallKeep
    */
   async answer(): Promise<void> {
-    if (this.state.call !== null && this.state.callState === 'incoming call') {
+    if (this.state.call !== null && this.state.inboundCall) {
       this.state.callOptions.constraints = { audio: true, video: true };
       this.state.callOptions.receiveAudio = true;
       this.state.callOptions.receiveVideo = true;
@@ -386,6 +378,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
       if (Platform.OS === 'android') {
         RNCallKeep.answerIncomingCall(<string>this.state.callUuid);
       }
+      this.setState({ inboundCall: false });
     }
   }
 
@@ -424,6 +417,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
    * @param obj - webrtc object from aculab-webrtc
    */
   onIncoming(obj: any): void {
+    this.setState({ inboundCall: true });
     super.onIncoming(obj);
     if (!this.state.incomingUI && this.state.callUIInteraction === 'none') {
       if (!this.state.callKeepCallActive) {

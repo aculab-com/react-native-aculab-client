@@ -47,8 +47,7 @@ const MainCallButtons = (props: any) => {
 const DialKeypad = (props: any) => {
   return (
     <View style={styles.dialKeypad}>
-      {props.aculabCall.state.callState === 'calling' ||
-      props.aculabCall.state.callState === 'ringing' ? (
+      {props.aculabCall.state.outboundCall ? (
         <View>
           <Text style={styles.callingText}>
             Calling {props.aculabCall.state.serviceName}
@@ -223,11 +222,7 @@ const CallOutComponent = (props: any) => {
 
 const DisplayClientCall = (props: any) => {
   if (!props.aculabCall.state.remoteStream) {
-    if (
-      props.aculabCall.state.callState === 'calling' ||
-      props.aculabCall.state.callState === 'ringing' ||
-      props.aculabCall.state.callState === 'connecting'
-    ) {
+    if (props.aculabCall.state.outboundCall) {
       return (
         <View style={styles.center}>
           <Text style={styles.callingText}>
@@ -313,7 +308,7 @@ const DisplayClientCall = (props: any) => {
 };
 
 const CallDisplayHandler = (props: any) => {
-  if (props.aculabCall.state.callState === 'incoming call') {
+  if (props.aculabCall.state.inboundCall) {
     return (
       <View style={styles.incomingContainer}>
         <View style={styles.center}>
@@ -340,7 +335,7 @@ const CallDisplayHandler = (props: any) => {
 };
 
 const CallButtonsHandler = (props: any) => {
-  if (props.aculabCall.state.callState === 'incoming call') {
+  if (props.aculabCall.state.inboundCall) {
     return <View />;
   } else if (props.aculabCall.state.callState !== 'idle') {
     if (props.aculabCall.state.callOptions.receiveVideo) {
@@ -390,10 +385,7 @@ class AcuCall extends AculabCall {
   }
 
   componentDidUpdate() {
-    if (
-      this.state.callUIInteraction === 'answered' &&
-      this.state.callState === 'incoming call'
-    ) {
+    if (this.state.callUIInteraction === 'answered' && this.state.inboundCall) {
       this.answerCall();
     }
   }
@@ -418,7 +410,11 @@ class AcuCall extends AculabCall {
             </Text>
           )}
         </View>
-        {this.state.callState === 'idle' ? <RegisterButton /> : <View />}
+        {!this.state.inboundCall && !this.state.outboundCall ? (
+          <RegisterButton />
+        ) : (
+          <View />
+        )}
       </View>
     );
   };
