@@ -63,6 +63,13 @@ public class IncomingCallActivity extends Activity {
 
   private void fullScreenCall(String name, String caller, String uuid) {
 
+    WritableMap params = Arguments.createMap();
+    params.putBoolean("fullScreenCall", true);
+    params.putString("name", name);
+    params.putString("caller", caller);
+    params.putString("uuid", uuid);
+    sendEvent("fullScreenCall", params);
+
     setContentView(R.layout.activity_call_incoming);
 
     TextView tvName = findViewById(R.id.tvName);

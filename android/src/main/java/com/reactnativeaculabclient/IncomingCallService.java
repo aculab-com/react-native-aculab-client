@@ -81,7 +81,7 @@ public class IncomingCallService extends ConnectionService {
           .build())
       .setOngoing(true)
       .setAutoCancel(false)
-      .setUsesChronometer(true)
+      .setUsesChronometer(false)
       .setFullScreenIntent(fullScreenPendingIntent, true)
       .setPriority(NotificationCompat.PRIORITY_HIGH)
       .setCategory(NotificationCompat.CATEGORY_CALL);
