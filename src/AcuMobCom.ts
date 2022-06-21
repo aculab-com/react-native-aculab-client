@@ -83,10 +83,15 @@ export class AculabBaseComponent<
   /**
    * Registration must be called before the AcuMobCom component can be used!\
    * Creates AculabCloudClient object and allows incoming calls
+   * @param {string} webRTCToken optional parameter, if not provided the function uses props.webRTCToken
    */
-  async register(): Promise<void> {
+  async register(webRTCToken?: string): Promise<void> {
     if (this.state.callState === 'idle') {
-      this.setState({ webRTCToken: this.props.webRTCToken });
+      if (webRTCToken) {
+        this.setState({ webRTCToken: webRTCToken });
+      } else {
+        this.setState({ webRTCToken: this.props.webRTCToken });
+      }
       this.setState(
         {
           client: new AculabCloudClient(

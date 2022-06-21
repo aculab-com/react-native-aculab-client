@@ -190,7 +190,7 @@ Use state **callState** as indication of current state.
 | Function          | Returns   | Description                               |
 |---                | ---       | ---                                       |
 | getToken({registerClientId: string, tokenLifeTime: number, enableIncomingCall: boolean, callClientRange: string, cloudRegionId: string, cloudUsername: string, apiAccessKey: string})        | string    | Get WebRTC Token for registration. **This should be done on server side**    |
-| register()        |           | Register the client using AcuMobCom parameters. Every client has to be registered before using any other features.    |
+| register(string?) |           | Register the client using AcuMobCom parameters. Every client has to be registered before using any other features. Takes optional argument WebRTC Token (string). In no argument it uses WebRTC Token from component props     |
 | unregister()      |           | Unregister current client                 |
 | callCheck()       | boolean   | Returns true if a call is in progress     |
 | callClient()      |           | Calls client stored in callClientId       |
