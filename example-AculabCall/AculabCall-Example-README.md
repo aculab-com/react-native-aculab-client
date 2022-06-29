@@ -12,21 +12,31 @@ This Example demonstrates use of the AculabCall Component from [react-native-acu
 
 ### 2. Install node_modules
 
+#### 1. Install node_modules for the react-native-aculab-client package
+
 In the package root folder (react-native-aculab-client) run
 
 ``` node
 npm install
 ```
 
-Run the same command in the Example folder (react-native-aculab-client/example-AculabCall)
+#### 2. Install node_modules for the example-AculabCall application
+
+In the example-AculabCall folder (react-native-aculab-client/example-AculabCall) run
+
+``` node
+npm install
+```
 
 ### 3. Install the pods for ios
+
+In the example-AculabCall folder (react-native-aculab-client/example-AculabCall) run
 
 ``` node
 npx pod-install
 ```
 
-OR install pods directly from ios folder (example-AculbaCall/ios) using
+OR install pods directly from ios folder (example-AculabCall/ios) using
 
 ``` node
 pod install
@@ -51,23 +61,18 @@ public void peerConnectionSendDTMF(String tone, int duration, int interToneGap, 
 }
 ```
 
-### 5. Edit parameters given to AcuMob in file RegisterScreen.tsx to your own cloud
+### 5. Edit parameters in devConstants.dev.ts to work with your own cloud
 
-You can change default registration credentials in the RegisterScreen states.
+You can change default credentials in the react-native-aculab-client/src/devConstants.dev.ts file.
 This step is not required but it makes testing easier, however you can always edit these props in the registration screen via UI in the Example app.
 
-[AculabCall props](https://github.com/aculab-com/react-native-aculab-client/blob/callkeepdev/example-AculabCall/src/RegisterScreen.tsx#L15)
-
 ```typescript
-const RegisterScreen = () => {
-  const [webRTCAccessKey, setWebRTCAccessKey] = useState(string);
-  const [apiAccessKey, setApiAccessKey] = useState(string);
-  const [cloudRegionId, setCloudRegionId] = useState('0-2-0');
-  const [cloudUsername, setCloudUsername] = useState('charles.new@aculab.com');
-  const [logLevel, setLogLevel] = useState('2');
-  const [registerClientId, setRegisterClientId] = useState('charles');
-  ...
-}
+const webRTCAccessKey = '';
+const apiAccessKey = '';
+const cloudRegionId = '0-2-0';
+const cloudUsername = 'charles.new@aculab.com';
+const logLevel = '0';
+const registerClientId = 'charles';
 ```
 
 Now you're good to go.

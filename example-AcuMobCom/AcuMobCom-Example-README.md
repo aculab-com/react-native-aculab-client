@@ -10,15 +10,25 @@ This Example demonstrates use of the AcuMobCom Component from [react-native-acul
 
 ### 2. Install node_modules
 
+#### 1. Install node_modules for the react-native-aculab-client package
+
 In the package root folder (react-native-aculab-client) run
 
 ``` node
 npm install
 ```
 
-Run the same command in the Example folder (react-native-aculab-client/example-AcuMobCom)
+#### 2. Install node_modules for the example-AculabCall application
+
+In the example-AcuMobCom folder (react-native-aculab-client/example-AcuMobCom) run
+
+``` node
+npm install
+```
 
 ### 3. Install the pods for ios
+
+In the example-AcuMobCom folder (react-native-aculab-client/example-AcuMobCom) run
 
 ``` node
 npx pod-install
@@ -49,23 +59,18 @@ public void peerConnectionSendDTMF(String tone, int duration, int interToneGap, 
 }
 ```
 
-### 5. Edit parameters given to AcuMob in file RegisterScreen.tsx to your own cloud
+### 5. Edit parameters in devConstants.dev.ts to work with your own cloud
 
-You can change default registration credentials in the RegisterScreen states.
+You can change default credentials in the react-native-aculab-client/src/devConstants.dev.ts file.
 This step is not required but it makes testing easier, however you can always edit these props in the registration screen via UI in the Example app.
 
-[AcuMobCom props](https://github.com/aculab-com/react-native-aculab-client/blob/cf2c0f62ac12c4330e4f4d24883bcb31152a64c5/example-AcuMobCom/src/RegisterScreen.tsx#L14)
-
 ```typescript
-const RegisterScreen = () => {
-  const [webRTCAccessKey, setWebRTCAccessKey] = useState(string);
-  const [apiAccessKey, setApiAccessKey] = useState(string);
-  const [cloudRegionId, setCloudRegionId] = useState('0-2-0');
-  const [cloudUsername, setCloudUsername] = useState('charles.new@aculab.com');
-  const [logLevel, setLogLevel] = useState('2');
-  const [registerClientId, setRegisterClientId] = useState('charles');
-  ...
-}
+const webRTCAccessKey = '';
+const apiAccessKey = '';
+const cloudRegionId = '0-2-0';
+const cloudUsername = 'charles.new@aculab.com';
+const logLevel = '0';
+const registerClientId = 'charles';
 ```
 
 Now you're good to go.
