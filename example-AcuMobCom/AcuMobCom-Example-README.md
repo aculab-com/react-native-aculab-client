@@ -10,21 +10,21 @@ This Example demonstrates use of the AcuMobCom Component from [react-native-acul
 
 ### 2. Install node_modules
 
-#### 1. Install node_modules for the react-native-aculab-client package
++ **Install node_modules for the react-native-aculab-client package**
 
-In the package root folder (react-native-aculab-client) run
+    In the package root folder (react-native-aculab-client) run
 
-``` node
-npm install
-```
+    ``` node
+    npm install
+    ```
 
-#### 2. Install node_modules for the example-AculabCall application
++ **Install node_modules for the example-AculabCall application**
 
-In the example-AcuMobCom folder (react-native-aculab-client/example-AcuMobCom) run
+    In the example-AcuMobCom folder (react-native-aculab-client/example-AcuMobCom) run
 
-``` node
-npm install
-```
+    ``` node
+    npm install
+    ```
 
 ### 3. Install the pods for ios
 
@@ -65,8 +65,8 @@ You can change default credentials in the react-native-aculab-client/src/devCons
 This step is not required but it makes testing easier, however you can always edit these props in the registration screen via UI in the Example app.
 
 ```typescript
-const webRTCAccessKey = '';
-const apiAccessKey = '';
+const webRTCAccessKey = 'heh0zprmk7okgt...';
+const apiAccessKey = '_YVDDzhvbzvv8h...';
 const cloudRegionId = '0-2-0';
 const cloudUsername = 'charles.new@aculab.com';
 const logLevel = '0';
