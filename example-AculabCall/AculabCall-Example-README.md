@@ -2,6 +2,8 @@
 
 This Example demonstrates use of the AculabCall Component from [react-native-aculab-client](https://www.npmjs.com/package/react-native-aculab-client) package. It allows you to make calls to Aculab cloud services from iOS and Android platforms and to send dtmf. It Also supports peer-to-peer video/audio calls.
 
+Please NOTE that this app needs to run on real devices and does not work with simulators and emulators. Furthermore to run iOS you are expected to install pods and after open example-AculabCall/ios/AculabCallExample.xcworkspace in Xcode
+
 ---
 
 **This example app is set for Android OS < 11 (API 30) to run this example app on Android 11 and higher, please see AculabCall-README.md (section Add Permissions) and change AndroidManifest.xml and android/build.gradle accordingly.**
