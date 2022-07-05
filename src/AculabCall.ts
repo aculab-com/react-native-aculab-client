@@ -283,7 +283,6 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
     if (Platform.OS === 'ios') {
       this.setState({ callUuid: callUUID });
     }
-    this.setState({ incomingUI: true });
     this.setState({ callKeepCallActive: true });
   }
 
@@ -439,6 +438,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
             this.state.incomingCallClientId
           );
         }
+        this.setState({ incomingUI: true });
       });
     }
   }
@@ -512,7 +512,7 @@ class AculabCall extends AculabBaseComponent<AculabCallProps, AculabCallState> {
     this.setState({ inboundCall: false });
     setTimeout(() => {
       this.setState({ callUuid: '' });
-    }, 1000);
+    }, 100);
     super.callDisconnected(obj);
   }
 
