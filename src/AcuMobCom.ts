@@ -119,7 +119,7 @@ export class AculabBaseComponent<
    * Unregister - set default state to client and webRTCToken
    */
   unregister(): void {
-    if (this.state.client) {
+    if (this.state.client._transport_connected) {
       this.disableIncomingCalls();
     }
     this.setState({ webRTCToken: '' });
