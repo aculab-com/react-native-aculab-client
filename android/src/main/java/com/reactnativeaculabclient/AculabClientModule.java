@@ -37,15 +37,10 @@ public class AculabClientModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void switchAudioOutput(Boolean isSpeakerPhoneOn) {
         AudioManager audioManager = (AudioManager)this.reactContext.getSystemService(this.reactContext.AUDIO_SERVICE);
-
-        if (isSpeakerPhoneOn != audioManager.isSpeakerphoneOn())  {
-            audioManager.setSpeakerphoneOn(isSpeakerPhoneOn);
-        }
-        
-        if (isSpeakerPhoneOn){
-            audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+        if (isSpeakerPhoneOn) {
+            audioManager.setSpeakerphoneOn(true);
         } else {
-            audioManager.setMode(AudioManager.MODE_NORMAL);
+            audioManager.setSpeakerphoneOn(false);
         }
     }
 
