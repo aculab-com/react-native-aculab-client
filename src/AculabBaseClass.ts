@@ -1,6 +1,6 @@
 import { registerGlobals } from 'react-native-webrtc';
 // @ts-ignore
-import { AculabCloudClient } from 'aculab-webrtc';
+import { AculabCloudClient } from '@aculab-com/aculab-webrtc';
 import { deleteSpaces, showAlert } from './helpers';
 import { NativeModules } from 'react-native';
 
